@@ -1,0 +1,44 @@
+{
+ "build-up": {
+  "name_gap": 7.98,
+  "fill_after": 2.61,
+  "rich": false,
+  "named_colour": 0.3
+ },
+ "progression": {
+  "name_gap": 8.32,
+  "fill_after": 3.15,
+  "rich": false,
+  "named_colour": 0.3
+ },
+ "final-third attack": {
+  "name_gap": 2.42,
+  "fill_after": 3.0,
+  "rich": true,
+  "named_colour": 0.3
+ },
+ "counter-attack": {
+  "name_gap": 4.56,
+  "fill_after": 3.0,
+  "rich": false,
+  "named_colour": 0.3
+ },
+ "chance": {
+  "name_gap": 24.76,
+  "fill_after": 3.0,
+  "rich": true,
+  "named_colour": 0.3
+ },
+ "set piece": {
+  "name_gap": 40.0,
+  "fill_after": 30.0,
+  "rich": false,
+  "named_colour": 0.02
+ },
+ "dead ball": {
+  "name_gap": 40.0,
+  "fill_after": 9.46,
+  "rich": false,
+  "named_colour": 0.01
+ }
+}

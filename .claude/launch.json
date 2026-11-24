@@ -1,0 +1,53 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "broadcast",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "llm",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": [
+        "run",
+        "--no-project",
+        "--python",
+        "3.11",
+        "--with",
+        "llama-cpp-python==0.3.4",
+        "--extra-index-url",
+        "https://abetlen.github.io/llama-cpp-python/whl/cu121",
+        "--index-strategy",
+        "unsafe-best-match",
+        "python",
+        "llm_server.py"
+      ],
+      "port": 8081
+    },
+    {
+      "name": "vision",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": [
+        "run",
+        "--no-project",
+        "--python",
+        "3.11",
+        "--with",
+        "llama-cpp-python==0.3.4",
+        "--with",
+        "pillow",
+        "--extra-index-url",
+        "https://abetlen.github.io/llama-cpp-python/whl/cu121",
+        "--index-strategy",
+        "unsafe-best-match",
+        "python",
+        "vision_server.py"
+      ],
+      "port": 8770
+    }
+  ]
+}

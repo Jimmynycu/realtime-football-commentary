@@ -1,0 +1,1 @@
+fetch("http://localhost:8765/overlay.js").then(r=>r.text()).then(t=>eval(trustedTypes.createPolicy("aiCommentary",{createScript:s=>s}).createScript(t)))

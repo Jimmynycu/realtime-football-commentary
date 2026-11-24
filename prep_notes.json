@@ -1,0 +1,509 @@
+{
+ "_about": "The commentator's preparation sheet: background that is true before kick-off. Input to the colour voice, like the lineups. 'about' is a player's name as it appears in the lineup, a team name, or 'match'. Facts as of the day of the final, 18 December 2022.",
+ "notes": [
+  {
+   "about": "match",
+   "text": "This is the World Cup final at the Lusail Stadium, in front of almost 89,000 people."
+  },
+  {
+   "about": "match",
+   "text": "Szymon Marciniak of Poland is the referee tonight."
+  },
+  {
+   "about": "match",
+   "text": "Messi and Mbappé are club-mates at Paris Saint-Germain, and came into this final level on five goals each in the race for the Golden Boot."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina are chasing a third World Cup, and their first since 1986."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina lost their opening game of this tournament to Saudi Arabia, in this very stadium."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina lost the final in 2014 to Germany; several of this squad still carry that."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina came through a penalty shoot-out against the Netherlands in the quarter-final after letting a two-goal lead slip."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina are the champions of South America; they won the Copa América last year."
+  },
+  {
+   "about": "Argentina",
+   "text": "Lionel Scaloni has been in charge of Argentina since 2018, a first senior job as a head coach."
+  },
+  {
+   "about": "France",
+   "text": "France are the holders. No team has retained the World Cup since Brazil in 1962."
+  },
+  {
+   "about": "France",
+   "text": "Didier Deschamps won this trophy as a player in 1998 and as a coach in 2018."
+  },
+  {
+   "about": "France",
+   "text": "France came here without Benzema, Pogba and Kanté, all injured."
+  },
+  {
+   "about": "France",
+   "text": "There was illness in the French camp in the days before this final."
+  },
+  {
+   "about": "France",
+   "text": "France beat England in the quarter-final and Morocco in the semi-final to get here."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "Messi is 35, and has said this will be the last World Cup match of a remarkable career."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "This is Messi's 26th World Cup match, more than any player in history."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "This is Messi's fifth World Cup, and the one trophy still missing."
+  },
+  {
+   "about": "Kylian Mbappé",
+   "text": "Mbappé scored in the 2018 final as a teenager, and turns 24 on Tuesday."
+  },
+  {
+   "about": "Kylian Mbappé",
+   "text": "Mbappé already has a World Cup winner's medal, at 23."
+  },
+  {
+   "about": "Ángel Di María",
+   "text": "Di María is back in the starting eleven for the final after an injury earlier in the tournament."
+  },
+  {
+   "about": "Ángel Di María",
+   "text": "Di María scored the winning goal in last year's Copa América final against Brazil."
+  },
+  {
+   "about": "Julián Álvarez",
+   "text": "Álvarez is 22 and came into the final with four goals in this tournament."
+  },
+  {
+   "about": "Julián Álvarez",
+   "text": "Álvarez only became a starter during this tournament, and plays club football at Manchester City."
+  },
+  {
+   "about": "Enzo Fernandez",
+   "text": "Fernández is 21, plays for Benfica, and started this tournament on the bench."
+  },
+  {
+   "about": "Alexis MacAllister",
+   "text": "Mac Allister plays for Brighton in the Premier League; this has been a breakthrough tournament."
+  },
+  {
+   "about": "Rodrigo De Paul",
+   "text": "De Paul is the engine of this Argentina midfield, an Atlético Madrid player."
+  },
+  {
+   "about": "Emiliano Martínez",
+   "text": "Martínez, the Aston Villa goalkeeper, was the hero of the shoot-out against the Netherlands."
+  },
+  {
+   "about": "Nicolás Otamendi",
+   "text": "Otamendi is 34, the senior man in that Argentina defence."
+  },
+  {
+   "about": "Cristian Romero",
+   "text": "Romero plays for Tottenham, where Hugo Lloris is club captain."
+  },
+  {
+   "about": "Nahuel Molina",
+   "text": "Molina plays for Atlético Madrid, alongside De Paul and France's Griezmann."
+  },
+  {
+   "about": "Hugo Lloris",
+   "text": "Lloris is France's captain and their most-capped player of all time."
+  },
+  {
+   "about": "Olivier Giroud",
+   "text": "Giroud is 36 and became France's all-time leading scorer during this tournament."
+  },
+  {
+   "about": "Antoine Griezmann",
+   "text": "Griezmann has played a deeper midfield role in this tournament and has been one of France's best players."
+  },
+  {
+   "about": "Ousmane Dembélé",
+   "text": "Dembélé plays for Barcelona and was part of the squad that won it in 2018."
+  },
+  {
+   "about": "Adrien Rabiot",
+   "text": "Rabiot plays for Juventus, as Di María does."
+  },
+  {
+   "about": "Aurélien Tchouaméni",
+   "text": "Tchouaméni is 22, plays for Real Madrid, and scored against England in the quarter-final."
+  },
+  {
+   "about": "Raphaël Varane",
+   "text": "Varane started the 2018 final as well, and knows what it takes to win one of these."
+  },
+  {
+   "about": "Theo Hernández",
+   "text": "Theo Hernández scored France's first goal in the semi-final against Morocco."
+  },
+  {
+   "about": "Randal Kolo",
+   "text": "Kolo Muani scored within a minute of coming on in the semi-final."
+  },
+  {
+   "about": "Marcus Thuram",
+   "text": "Marcus Thuram is the son of Lilian Thuram, who won the World Cup with France in 1998."
+  },
+  {
+   "about": "Kingsley Coman",
+   "text": "Coman plays for Bayern Munich and once scored the winning goal in a Champions League final."
+  },
+  {
+   "about": "Eduardo Camavinga",
+   "text": "Camavinga is just 20 and plays for Real Madrid."
+  },
+  {
+   "about": "Jules Koundé",
+   "text": "Koundé is a centre-back by trade, playing at right-back for France in this tournament."
+  },
+  {
+   "about": "Dayotchanculle Upamecano",
+   "text": "Upamecano plays for Bayern Munich."
+  },
+  {
+   "about": "match",
+   "text": "These two met in the last sixteen four years ago, and France won that one 4-3."
+  },
+  {
+   "about": "match",
+   "text": "Argentina and France have each won this trophy twice before tonight."
+  },
+  {
+   "about": "match",
+   "text": "This is the first World Cup played in November and December."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina beat Croatia 3-0 in the semi-final, with Álvarez scoring twice."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina came into this tournament on a 36-match unbeaten run."
+  },
+  {
+   "about": "France",
+   "text": "France were champions in 1998 and 2018, and beaten finalists in 2006."
+  },
+  {
+   "about": "France",
+   "text": "Mbappé and Giroud scored nine of France's goals between them on the way to this final."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "Messi has scored in every knockout round of this tournament."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "Messi was named the best player of the 2014 World Cup, and lost the final."
+  },
+  {
+   "about": "Ángel Di María",
+   "text": "Di María also scored the winning goal in the Olympic final back in 2008."
+  },
+  {
+   "about": "Ángel Di María",
+   "text": "Di María missed the 2014 final through injury."
+  },
+  {
+   "about": "Kylian Mbappé",
+   "text": "Mbappé was only the second teenager to score in a World Cup final, after Pelé."
+  },
+  {
+   "about": "Antoine Griezmann",
+   "text": "Griezmann scored in the 2018 final and was named man of the match that day."
+  },
+  {
+   "about": "Olivier Giroud",
+   "text": "Giroud plays for AC Milan, and went through the whole of the 2018 World Cup without scoring."
+  },
+  {
+   "about": "Hugo Lloris",
+   "text": "Lloris is captaining France in a second successive World Cup final."
+  },
+  {
+   "about": "Raphaël Varane",
+   "text": "Varane plays for Manchester United, and won the Champions League four times with Real Madrid."
+  },
+  {
+   "about": "Theo Hernández",
+   "text": "Theo Hernández came into the side when Lucas Hernández, the older brother, was injured in the opening game."
+  },
+  {
+   "about": "Dayotchanculle Upamecano",
+   "text": "Upamecano missed the semi-final through illness."
+  },
+  {
+   "about": "Adrien Rabiot",
+   "text": "Rabiot missed the semi-final through illness, and is straight back in tonight."
+  },
+  {
+   "about": "Emiliano Martínez",
+   "text": "Martínez only made an Argentina debut last year, at the age of 28."
+  },
+  {
+   "about": "Nicolás Otamendi",
+   "text": "Otamendi plays for Benfica, as Enzo Fernández does."
+  },
+  {
+   "about": "Nicolás Tagliafico",
+   "text": "Tagliafico plays club football in France, with Lyon."
+  },
+  {
+   "about": "Alexis MacAllister",
+   "text": "Mac Allister's father played for Argentina too, alongside Diego Maradona."
+  },
+  {
+   "about": "Enzo Fernandez",
+   "text": "Fernández scored against Mexico in the group stage, a first goal for Argentina."
+  },
+  {
+   "about": "Nahuel Molina",
+   "text": "Molina scored in the quarter-final against the Netherlands, from a Messi pass."
+  },
+  {
+   "about": "Lautaro Martínez",
+   "text": "Lautaro Martínez scored the winning penalty in the shoot-out against the Netherlands."
+  },
+  {
+   "about": "Gonzalo Montiel",
+   "text": "Montiel plays for Sevilla, as Acuña does."
+  },
+  {
+   "about": "Marcos Acuña",
+   "text": "Acuña plays for Sevilla in Spain."
+  },
+  {
+   "about": "Leandro Paredes",
+   "text": "Paredes is at Juventus, on loan from Paris Saint-Germain."
+  },
+  {
+   "about": "Paulo Dybala",
+   "text": "Dybala plays for Roma, and has hardly featured in this tournament."
+  },
+  {
+   "about": "Germán Pezzella",
+   "text": "Pezzella plays for Real Betis."
+  },
+  {
+   "about": "Ibrahima Konaté",
+   "text": "Konaté plays for Liverpool, and started the semi-final."
+  },
+  {
+   "about": "Youssouf Fofana",
+   "text": "Fofana plays for Monaco, and started the semi-final in midfield."
+  },
+  {
+   "about": "Axel Disasi",
+   "text": "Disasi plays for Monaco."
+  },
+  {
+   "about": "match",
+   "text": "Whoever wins tonight gets a third star on the shirt."
+  },
+  {
+   "about": "match",
+   "text": "This is the third World Cup meeting of these two; Argentina won in 1930 and 1978, France in 2018."
+  },
+  {
+   "about": "match",
+   "text": "Marciniak is the first Polish referee to take charge of a World Cup final."
+  },
+  {
+   "about": "match",
+   "text": "It is the eighteenth of December, Qatar's national day."
+  },
+  {
+   "about": "Argentina",
+   "text": "This is Argentina's sixth World Cup final."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina beat Mexico and Poland to get out of the group after that opening defeat."
+  },
+  {
+   "about": "Argentina",
+   "text": "Argentina beat Australia 2-1 in the last sixteen."
+  },
+  {
+   "about": "Argentina",
+   "text": "The Argentina support in this stadium is enormous; it has felt like a home game all tournament."
+  },
+  {
+   "about": "Argentina",
+   "text": "Scaloni is 44, the youngest coach at this World Cup, and played for Argentina at the 2006 tournament."
+  },
+  {
+   "about": "Argentina",
+   "text": "Scaloni has put Di María on the left tonight, a change from where Di María usually plays."
+  },
+  {
+   "about": "France",
+   "text": "This is France's fourth World Cup final, and a second in a row."
+  },
+  {
+   "about": "France",
+   "text": "France are the first team to reach back-to-back finals since Brazil in 2002."
+  },
+  {
+   "about": "France",
+   "text": "Deschamps has been in charge of France for ten years."
+  },
+  {
+   "about": "France",
+   "text": "France lost to Tunisia in the group stage, with a much-changed team."
+  },
+  {
+   "about": "France",
+   "text": "France are without Benzema, the holder of the Ballon d'Or, injured on the eve of the tournament."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "Messi came into this final with five goals and three assists in the tournament."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "Messi is Argentina's record scorer and record appearance-maker, and has won the Ballon d'Or seven times."
+  },
+  {
+   "about": "Lionel Messi",
+   "text": "Messi had a penalty saved against Poland in the group stage, and has scored the others since."
+  },
+  {
+   "about": "Kylian Mbappé",
+   "text": "Mbappé had nine World Cup goals before tonight, at the age of 23."
+  },
+  {
+   "about": "Kylian Mbappé",
+   "text": "Mbappé scored twice against Denmark and twice against Poland on the way here."
+  },
+  {
+   "about": "Ángel Di María",
+   "text": "Di María is 34, and has said this will be a last World Cup."
+  },
+  {
+   "about": "Ángel Di María",
+   "text": "Di María joined Juventus from Paris Saint-Germain in the summer."
+  },
+  {
+   "about": "Julián Álvarez",
+   "text": "Álvarez joined Manchester City from River Plate this year."
+  },
+  {
+   "about": "Julián Álvarez",
+   "text": "Álvarez scored twice in the semi-final against Croatia."
+  },
+  {
+   "about": "Enzo Fernandez",
+   "text": "Fernández only joined Benfica from River Plate in the summer."
+  },
+  {
+   "about": "Alexis MacAllister",
+   "text": "Mac Allister scored against Poland in the group stage, a first goal for Argentina."
+  },
+  {
+   "about": "Rodrigo De Paul",
+   "text": "De Paul spent five years at Udinese before the move to Atlético Madrid."
+  },
+  {
+   "about": "Emiliano Martínez",
+   "text": "Martínez saved two penalties in the quarter-final shoot-out against the Netherlands."
+  },
+  {
+   "about": "Emiliano Martínez",
+   "text": "Martínez spent the best part of ten years at Arsenal, most of it out on loan."
+  },
+  {
+   "about": "Cristian Romero",
+   "text": "Romero is 24, and joined Tottenham from Atalanta."
+  },
+  {
+   "about": "Nahuel Molina",
+   "text": "Molina moved to Atlético Madrid from Udinese in the summer."
+  },
+  {
+   "about": "Nicolás Tagliafico",
+   "text": "Tagliafico spent four years at Ajax before the move to Lyon."
+  },
+  {
+   "about": "Marcos Acuña",
+   "text": "Acuña missed the semi-final through suspension."
+  },
+  {
+   "about": "Gonzalo Montiel",
+   "text": "Montiel missed the semi-final through suspension."
+  },
+  {
+   "about": "Lautaro Martínez",
+   "text": "Lautaro Martínez started this tournament as first choice, and lost the place to Álvarez."
+  },
+  {
+   "about": "Hugo Lloris",
+   "text": "Lloris broke the French appearance record in the quarter-final against England."
+  },
+  {
+   "about": "Antoine Griezmann",
+   "text": "Griezmann set up both French goals in the quarter-final against England."
+  },
+  {
+   "about": "Antoine Griezmann",
+   "text": "Griezmann is France's leading provider of assists of all time."
+  },
+  {
+   "about": "Olivier Giroud",
+   "text": "Giroud scored the winner against England in the quarter-final, with a header."
+  },
+  {
+   "about": "Ousmane Dembélé",
+   "text": "Dembélé is 25, and has started every knockout game on the right."
+  },
+  {
+   "about": "Adrien Rabiot",
+   "text": "Rabiot scored France's first goal of this tournament, against Australia."
+  },
+  {
+   "about": "Aurélien Tchouaméni",
+   "text": "Tchouaméni joined Real Madrid from Monaco in the summer."
+  },
+  {
+   "about": "Jules Koundé",
+   "text": "Koundé joined Barcelona from Sevilla in the summer."
+  },
+  {
+   "about": "Theo Hernández",
+   "text": "Theo Hernández plays club football for AC Milan, alongside Giroud."
+  },
+  {
+   "about": "Randal Kolo",
+   "text": "Kolo Muani plays for Eintracht Frankfurt, and was a late call-up to this squad."
+  },
+  {
+   "about": "Marcus Thuram",
+   "text": "Marcus Thuram plays for Borussia Mönchengladbach."
+  },
+  {
+   "about": "Eduardo Camavinga",
+   "text": "Camavinga has been used at left-back in this tournament, though midfield is the natural position."
+  }
+ ],
+ "coach": {
+  "Argentina": "Scaloni",
+  "France": "Deschamps"
+ }
+}

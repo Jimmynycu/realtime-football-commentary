@@ -1,0 +1,8 @@
+{
+  "manifest_version": 3,
+  "name": "Live AI Commentary overlay",
+  "version": "0.1",
+  "description": "Overlays AI play-by-play and analysis on the real YouTube broadcast. Talks only to the local server.",
+  "content_scripts": [{ "matches": ["https://www.youtube.com/*"], "js": ["overlay.js"], "run_at": "document_idle" }],
+  "host_permissions": ["http://localhost:8765/*"]
+}

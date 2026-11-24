@@ -1,0 +1,36 @@
+# local model weights (~11 GB)
+models/
+
+# video: private recordings never published; only the demo is kept
+*.mp4
+*.webm
+*.mov
+!demo/demo.mp4
+ScreenRecording_*
+demo/raw.webm
+demo/audio/
+
+# broadcast transcript (copyrighted)
+data/captions_*.json
+
+# StatsBomb data, fetched on first run
+data/events_*.json
+data/lineups_*.json
+data/three-sixty_*.json
+data/matches_*.json
+
+# runtime / build
+runs/
+__pycache__/
+*.pyc
+
+# local tool settings
+.claude/settings.local.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,1 @@
+fetch("http://localhost:8770/live.js").then(r=>r.text()).then(t=>eval(trustedTypes.createPolicy("aiLive",{createScript:s=>s}).createScript(t)))

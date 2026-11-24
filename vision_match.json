@@ -1,0 +1,169 @@
+{
+ "_about": "Input for vision mode. Per team: name, scoreboard code, kit colours, shirt number -> player name, the starting XI (shirt numbers) and substitutions (match minute, number off, number on). Only players who can be on the pitch at the current scoreboard time are ever named. scoreboard_box: where the scoreboard is, as fractions [x0, y0, x1, y1] of the frame. video_id: the YouTube video these names belong to; any other video runs without names.",
+ "video_id": "RgqKdplLIk4",
+ "home": {
+  "name": "Argentina",
+  "code": "ARG",
+  "kit": "white shirts with light-blue vertical stripes and black shorts",
+  "players": {
+   "11": "Ángel Di María",
+   "19": "Nicolás Otamendi",
+   "10": "Lionel Messi",
+   "3": "Nicolás Tagliafico",
+   "21": "Paulo Dybala",
+   "1": "Franco Armani",
+   "15": "Ángel Correa",
+   "12": "Gero Rulli",
+   "23": "Emiliano Martínez",
+   "17": "Papu Gómez",
+   "6": "Germán Pezzella",
+   "7": "Rodrigo De Paul",
+   "22": "Lautaro Martínez",
+   "5": "Leandro Paredes",
+   "8": "Marcos Acuña",
+   "13": "Cristian Romero",
+   "2": "Juan Foyth",
+   "18": "Guido Rodríguez",
+   "25": "Lisandro Martínez",
+   "20": "Alexis MacAllister",
+   "4": "Gonzalo Montiel",
+   "14": "Exequiel Palacios",
+   "16": "Thiago Almada",
+   "26": "Nahuel Molina",
+   "9": "Julián Álvarez",
+   "24": "Enzo Fernandez"
+  },
+  "starting": [
+   "23",
+   "26",
+   "13",
+   "19",
+   "3",
+   "24",
+   "7",
+   "20",
+   "10",
+   "11",
+   "9"
+  ],
+  "substitutions": [
+   {
+    "minute": 63,
+    "off": "11",
+    "on": "8"
+   },
+   {
+    "minute": 90,
+    "off": "26",
+    "on": "4"
+   },
+   {
+    "minute": 101,
+    "off": "7",
+    "on": "5"
+   },
+   {
+    "minute": 101,
+    "off": "9",
+    "on": "22"
+   },
+   {
+    "minute": 115,
+    "off": "20",
+    "on": "6"
+   },
+   {
+    "minute": 120,
+    "off": "3",
+    "on": "21"
+   }
+  ]
+ },
+ "away": {
+  "name": "France",
+  "code": "FRA",
+  "kit": "dark navy blue shirts and shorts",
+  "players": {
+   "26": "Marcus Thuram",
+   "10": "Kylian Mbappé",
+   "14": "Adrien Rabiot",
+   "1": "Hugo Lloris",
+   "23": "Alphonse Areola",
+   "16": "Steve Mandanda",
+   "9": "Olivier Giroud",
+   "5": "Jules Koundé",
+   "2": "Benjamin Pavard",
+   "11": "Ousmane Dembélé",
+   "4": "Raphaël Varane",
+   "7": "Antoine Griezmann",
+   "22": "Theo Hernández",
+   "15": "Jordan Veretout",
+   "6": "Mattéo Guendouzi",
+   "3": "Axel Disasi",
+   "20": "Kingsley Coman",
+   "18": "Dayotchanculle Upamecano",
+   "8": "Aurélien Tchouaméni",
+   "24": "Ibrahima Konaté",
+   "13": "Youssouf Fofana",
+   "17": "William Saliba",
+   "12": "Randal Kolo",
+   "25": "Eduardo Camavinga"
+  },
+  "starting": [
+   "1",
+   "5",
+   "4",
+   "18",
+   "22",
+   "8",
+   "14",
+   "11",
+   "7",
+   "10",
+   "9"
+  ],
+  "substitutions": [
+   {
+    "minute": 40,
+    "off": "11",
+    "on": "12"
+   },
+   {
+    "minute": 41,
+    "off": "9",
+    "on": "26"
+   },
+   {
+    "minute": 70,
+    "off": "22",
+    "on": "25"
+   },
+   {
+    "minute": 70,
+    "off": "7",
+    "on": "20"
+   },
+   {
+    "minute": 95,
+    "off": "14",
+    "on": "13"
+   },
+   {
+    "minute": 112,
+    "off": "4",
+    "on": "24"
+   },
+   {
+    "minute": 120,
+    "off": "5",
+    "on": "3"
+   }
+  ]
+ },
+ "scoreboard_box": [
+  0,
+  0,
+  0.35,
+  0.62
+ ]
+}

@@ -1,0 +1,6 @@
+{
+  "video_id": "RgqKdplLIk4",
+  "source": "FIFA official YouTube channel: FULL MATCH: Argentina v France | 2022 FIFA World Cup Final",
+  "kickoff": {"1": 95.0, "2": 3297.8, "3": 6605.2, "4": 7615.3, "5": 8839.5},
+  "calibration": "Video second at which each period's clock starts. Read from the on-screen match clock and checked against goal frames (Messi 22:24 pen, Mbappe 79:24 pen, Messi 107:58, Messi shootout kick)."
+}

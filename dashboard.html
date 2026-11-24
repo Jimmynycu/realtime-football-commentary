@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control room · live commentary</title>
+<style>
+  /* Two rooms on one page. Data: what the system runs on and the levers that rebuild it. Eval: is it any good, measured. */
+  :root { --bg:#0b1016; --panel:#141c26; --line:#243142; --text:#e8eef5; --dim:#8a99ab; --booth:#3d9bd9; --human:#c97f2a;
+          --ok:#5fd38a; --warn:#f0b24a; --bad:#ff6b6b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 system-ui, "Segoe UI", sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2; }
+  h1 { font-size: 16px; margin: 0; } h1 small { color: var(--dim); font-weight: 400; margin-left: 8px; }
+  nav { display: flex; gap: 4px; } nav a { padding: 6px 14px; border-radius: 6px; color: var(--dim); text-decoration: none; font-weight: 600; }
+  nav a[aria-current="page"] { background: var(--panel); color: var(--text); outline: 1px solid var(--line); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; } .chip { padding: 3px 10px; border: 1px solid var(--line); border-radius: 99px; font-size: 12px; color: var(--dim); }
+  main { max-width: 1180px; margin: 0 auto; padding: 20px; display: none; scroll-margin-top: 90px; } main.on { display: block; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
+  h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); margin: 0 0 4px; }
+  .why { color: var(--dim); margin: 0 0 12px; max-width: 80ch; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .tile { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .tile b { display: block; font-size: 26px; font-variant-numeric: tabular-nums; line-height: 1.2; } .tile span { color: var(--dim); font-size: 12px; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; } th, td { text-align: left; padding: 7px 12px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--dim); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; white-space: nowrap; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; } tr:last-child td { border-bottom: 0; }
+  td small { color: var(--dim); display: block; }
+  .tag { font-size: 11px; padding: 1px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--dim); white-space: nowrap; }
+  .st { white-space: nowrap; } .st.ok { color: var(--ok); } .st.warn { color: var(--warn); } .st.bad { color: var(--bad); }
+  button { font: inherit; color: var(--text); background: #1d2a3a; border: 1px solid #33465c; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+  button:hover { background: #253548; } button:disabled { opacity: .45; cursor: default; } button.go { background: #1c4f78; border-color: #2f77ad; }
+  button.x { padding: 0 8px; color: var(--dim); } button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--booth); outline-offset: 2px; }
+  input, select { font: inherit; color: var(--text); background: #0f161f; border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; } .row label { color: var(--dim); display: flex; gap: 6px; align-items: center; }
+  .msg { color: var(--dim); min-height: 1.5em; } .msg.bad { color: var(--bad); }
+  .bars { display: grid; gap: 3px; min-width: 220px; } .bar { display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; font-size: 12px; }
+  .bar i { display: block; height: 8px; border-radius: 0 4px 4px 0; } .bar.b i { background: var(--booth); } .bar.h i { background: var(--human); }
+  .legend { display: flex; gap: 16px; color: var(--dim); font-size: 12px; margin-bottom: 8px; } .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .suites { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .suite { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .suite h3 { margin: 0; font-size: 14px; } .suite p { margin: 0; color: var(--dim); font-size: 13px; flex: 1; } .suite .foot { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  pre { background: #0a0f15; border: 1px solid var(--line); border-radius: 6px; padding: 10px; margin: 10px 0 0; max-height: 300px; overflow: auto; font: 12px/1.45 ui-monospace, Consolas, monospace; white-space: pre-wrap; }
+  .who { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; } .who.play { color: var(--booth); } .who.colour { color: var(--ok); } .who.human { color: var(--human); }
+  tr.human td { color: var(--dim); font-style: italic; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; } .two section { margin: 0; } .two { margin-bottom: 16px; }
+</style>
+
+<header>
+  <h1>Control room<small id="match"></small></h1>
+  <nav><a href="#data" id="tab-data">Data</a><a href="#eval" id="tab-eval">Eval</a><a href="/">Console</a></nav>
+  <div class="chips" id="chips"></div>
+</header>
+
+<main id="room-data">
+  <div class="tiles" id="tiles"></div>
+
+  <section>
+    <h2>Rebuild</h2>
+    <p class="why">The lines on air are computed from everything below. Change an input, then rebuild; the next viewer to connect gets the new lines. The two long jobs run in the background and rebuild when they finish.</p>
+    <div class="row">
+      <label><input type="checkbox" id="voiced" checked> colour in the model's words (off: plain drafts)</label>
+      <button class="go" id="rebuild">Rebuild lines</button>
+      <button data-job="tune">Re-tune to the human</button>
+      <button data-job="write">Voice colour with the model</button>
+    </div>
+    <div class="msg" id="data-msg" role="status" aria-live="polite"></div>
+  </section>
+
+  <section>
+    <h2>Sources</h2>
+    <p class="why">Every input and every derived file: what it is for, where it comes from, how fresh it is, and whether it leaves this machine.</p>
+    <div class="scroll"><table id="sets"><thead><tr><th>Data</th><th>Used for</th><th class="n">Size</th><th>Updated</th><th>Lives</th><th>State</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <div class="two">
+    <section>
+      <h2>Tuned knobs</h2>
+      <p class="why">Set by the tuning loop against the human commentator, per phase of play. Read-only on purpose: a hand-set number is a guess.</p>
+      <div class="scroll"><table id="knobs"><thead><tr><th>Phase</th><th class="n">Name every</th><th class="n">Colour after</th><th>Says where</th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section>
+      <h2>Preparation sheet</h2>
+      <p class="why">Background a commentator brings to the match. The one human-written input, said word for word, never reworded by the model.</p>
+      <div class="row">
+        <select id="note-about" aria-label="Who the note is about"></select>
+        <input id="note-text" aria-label="New note" placeholder="One sentence, ending with a full stop." style="flex:1; min-width:200px">
+        <button id="note-add">Add</button>
+      </div>
+      <div class="msg" id="note-msg" role="status" aria-live="polite"></div>
+      <div class="scroll" style="max-height:280px; overflow-y:auto"><table id="notes"><tbody></tbody></table></div>
+    </section>
+  </div>
+
+  <section>
+    <h2>On air</h2>
+    <p class="why">What the system says in a three-minute window, in order<span id="air-note"></span>. Reading the two side by side is how the content mistakes were found; numbers alone did not show them.</p>
+    <div class="row">
+      <label>Jump to <select id="moment"></select></label>
+      <label>or minute <input id="minute" type="number" min="0" max="125" value="35" style="width:70px"></label>
+      <button id="show">Show</button>
+    </div>
+    <div class="scroll"><table id="air"><thead><tr><th>Clock</th><th>Voice</th><th>Line</th><th>Phase</th></tr></thead><tbody></tbody></table></div>
+  </section>
+</main>
+
+<main id="room-eval">
+  <div class="tiles" id="score-tiles"></div>
+
+  <section>
+    <h2>Against the human, phase by phase</h2>
+    <p class="why">Same match, same clock: the system's lines against the human commentator of the broadcast. Words per minute is how much is said; names per minute is how closely the ball is followed. A phase is on target within 10%.</p>
+    <div class="legend"><span><i style="background:var(--booth)"></i>System</span><span><i style="background:var(--human)"></i>Human commentator</span></div>
+    <div class="scroll"><table id="phases"><thead><tr><th>Phase</th><th class="n">Share of match</th><th>Words per minute</th><th>Names per minute</th><th>Words vs human</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <div class="two">
+    <section><h2>Rhythm</h2><p class="why">How the silences are distributed. A metronome and a person can speak the same number of words.</p>
+      <div class="scroll"><table id="rhythm"><thead><tr><th>Measure</th><th class="n">System</th><th class="n">Human</th></tr></thead><tbody></tbody></table></div></section>
+    <section><h2>What the dead-ball talk is made of</h2><p class="why">A statistics ticker and a co-commentator differ here, not in word count.</p>
+      <div class="scroll"><table id="texture"><thead><tr><th>Measure</th><th class="n">System</th><th class="n">Human</th></tr></thead><tbody></tbody></table></div></section>
+  </div>
+
+  <section>
+    <h2>Check suites</h2>
+    <p class="why">Each suite is a script in the repo; this page only starts it and keeps the result. One runs at a time.</p>
+    <div class="row"><button class="go" id="run-all">Run every suite that can run here</button><span class="msg" id="eval-msg" role="status" aria-live="polite"></span></div>
+    <div class="suites" id="suites"></div>
+    <pre id="log" hidden></pre>
+  </section>
+
+  <section>
+    <h2>Run history</h2>
+    <div class="scroll"><table id="history"><thead><tr><th>When</th><th>Job</th><th>Result</th><th class="n">Checks</th><th class="n">Took</th></tr></thead><tbody></tbody></table></div>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const h = (tag, props = {}, ...kids) => { const e = Object.assign(document.createElement(tag), props); e.append(...kids.filter(k => k != null)); return e; };
+const get = p => fetch(p).then(r => r.json());
+const post = (p, body) => fetch(p, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(r => r.json());
+const fill = (id, rows) => $(id).tBodies[0].replaceChildren(...rows);
+const size = b => b > 1e9 ? (b / 1e9).toFixed(1) + " GB" : b > 1e6 ? (b / 1e6).toFixed(1) + " MB" : b > 1e3 ? Math.round(b / 1e3) + " kB" : b + " B";
+const ago = t => { if (!t) return "never"; const s = Date.now() / 1000 - t; return s < 90 ? "just now" : s < 5400 ? Math.round(s / 60) + " min ago" : s < 129600 ? Math.round(s / 3600) + " h ago" : Math.round(s / 86400) + " days ago"; };
+const st = (kind, text) => h("span", { className: "st " + kind }, ({ ok: "✓ ", warn: "▲ ", bad: "✕ " })[kind] + text);
+const tile = (n, label) => h("div", { className: "tile" }, h("b", {}, n), h("span", {}, label));
+const num = (x, d = 1) => Number(x).toFixed(Number.isInteger(x) ? 0 : d);
+let meta, queue = [], polling = null;
+
+function tab() {
+  const on = location.hash === "#eval" ? "eval" : "data";
+  for (const t of ["data", "eval"]) { $("room-" + t).classList.toggle("on", t === on); $("tab-" + t).setAttribute("aria-current", t === on ? "page" : "false"); }
+  scrollTo(0, 0);  // the hash names a room, not a place on the page
+}
+
+async function loadData() {
+  const d = await get("/api/data");
+  $("match").textContent = `${d.match.home} v ${d.match.away} · ${d.match.title}`;
+  $("chips").replaceChildren(...d.services.map(s => h("span", { className: "chip", title: s.detail }, st(s.up ? "ok" : "warn", s.name + (s.up ? " up" : " off")))));
+  const b = d.booth;
+  $("tiles").replaceChildren(tile(b.lines.toLocaleString(), "lines on air, from " + d.sets[0].n.toLocaleString() + " events"), tile(b.play, "play-by-play"), tile(b.colour, "colour"),
+    tile(b.voiced ? b.model : "off", "colour in the model's words"), tile(d.sets.find(s => s.key === "notes").n, "preparation notes"));
+  $("voiced").checked = b.voiced;
+  fill("sets", d.sets.map(s => h("tr", {}, h("td", {}, s.label, h("small", {}, s.path)), h("td", {}, s.role, h("small", {}, "From: " + s.source)),
+    h("td", { className: "n" }, s.n.toLocaleString() + " " + s.unit, h("small", {}, size(s.bytes))), h("td", {}, ago(s.mtime)),
+    h("td", {}, h("span", { className: "tag" }, s.public)), h("td", {}, s.exists ? st("ok", "present") : st("bad", "missing")))));
+  fill("knobs", Object.entries(d.params).map(([ph, k]) => h("tr", {}, h("td", {}, ph), h("td", { className: "n" }, k.name_gap >= 40 ? "rarely" : k.name_gap.toFixed(1) + " s"),
+    h("td", { className: "n" }, k.fill_after != null && ["build-up", "progression", "set piece", "dead ball"].includes(ph) ? k.fill_after.toFixed(1) + " s" : "never"), h("td", {}, k.rich ? "yes" : "no"))));
+  $("note-about").replaceChildren(...d.abouts.map(a => new Option(a === "match" ? "the match" : a, a)));
+  $("air-note").textContent = d.transcript ? ", with the human commentator's words in between" : " (the human transcript is not redistributed, so only the system is shown here)";
+}
+
+async function loadNotes() {
+  const notes = await get("/api/notes");
+  fill("notes", notes.map((n, i) => h("tr", {}, h("td", {}, h("span", { className: "tag" }, n.about)), h("td", {}, n.text),
+    h("td", {}, h("button", { className: "x", title: "Remove this note", ariaLabel: "Remove note: " + n.text, onclick: async () => { await post("/api/notes", { remove: i }); loadNotes(); note("Removed. Rebuild to take it off air."); } }, "×")))).reverse());
+}
+const note = (text, bad) => { $("note-msg").textContent = text; $("note-msg").className = "msg" + (bad ? " bad" : ""); };
+
+async function showAir(t) {
+  const w = await get(`/api/lines?from=${t}&to=${t + 180}`);
+  fill("air", w.rows.map(r => h("tr", { className: r.who }, h("td", { className: "n" }, r.clock), h("td", {}, h("span", { className: "who " + r.who }, r.who === "play" ? "play-by-play" : r.who)),
+    h("td", {}, r.text, r.cut ? h("small", {}, "cut off by a more important line") : null), h("td", {}, r.phase))));
+}
+
+async function loadScore() {
+  const s = await get("/api/scorecard");
+  const on = s.phases.filter(p => Math.abs(p.wpm[0] / p.wpm[1] - 1) <= .1).length;
+  $("score-tiles").replaceChildren(tile(num(s.whole.wpm[0], 0), `words per minute · human ${num(s.whole.wpm[1], 0)}`), tile(num(s.whole.npm[0]), `names per minute · human ${num(s.whole.npm[1])}`),
+    tile(`${on} of ${s.phases.length}`, "phases within 10% of the human"), tile(num(s.rhythm[3][1], 0) + " s", `longest silence · human ${num(s.rhythm[3][2], 0)} s`),
+    tile(s.texture[2][1] + "%", `distinct openings · human ${s.texture[2][2]}%`));
+  const top = Math.max(...s.phases.flatMap(p => p.wpm)), topN = Math.max(...s.phases.flatMap(p => p.npm));
+  const pair = (v, max, d) => h("div", { className: "bars", title: `System ${v[0].toFixed(d)} · human ${v[1].toFixed(d)}` },
+    h("div", { className: "bar b" }, h("i", { style: `width:${Math.max(2, 150 * v[0] / max)}px` }), v[0].toFixed(d)), h("div", { className: "bar h" }, h("i", { style: `width:${Math.max(2, 150 * v[1] / max)}px` }), v[1].toFixed(d)));
+  fill("phases", s.phases.map(p => { const off = 100 * (p.wpm[0] / p.wpm[1] - 1);
+    return h("tr", {}, h("td", {}, p.phase), h("td", { className: "n" }, Math.round(100 * p.share) + "%"), h("td", {}, pair(p.wpm, top, 0)), h("td", {}, pair(p.npm, topN, 1)),
+      h("td", {}, st(Math.abs(off) <= 10 ? "ok" : "warn", (off >= 0 ? "+" : "") + off.toFixed(0) + "%" + (Math.abs(off) <= 10 ? " on target" : off < 0 ? " says less" : " says more")))); }));
+  for (const id of ["rhythm", "texture"]) fill(id, s[id].map(([label, a, b, unit]) => h("tr", {}, h("td", {}, label), h("td", { className: "n" }, num(a, a < 3 ? 2 : 1) + unit), h("td", { className: "n" }, num(b, b < 3 ? 2 : 1) + unit))));
+}
+
+function result(r) { return !r ? h("span", { className: "msg" }, "not run yet") : r.state === "running" ? st("warn", "running…")
+  : st(r.state === "passed" && !r.failed ? "ok" : "bad", (r.passed + r.failed ? `${r.passed} of ${r.passed + r.failed} checks passed` : r.state === "passed" ? "finished" : "failed") + ` · ${r.seconds} s · ${ago(r.started)}`); }
+
+async function loadJobs() {
+  const j = await get("/api/jobs"), cur = j.current, busy = cur && cur.state === "running";
+  $("suites").replaceChildren(...j.jobs.filter(x => x.suite).map(x => h("div", { className: "suite" }, h("h3", {}, x.label), h("p", {}, x.proves),
+    h("div", { className: "foot" }, cur && cur.name === x.name ? result(cur) : result(x.last),
+      h("button", { disabled: busy, onclick: () => run(x.name, "eval-msg"), title: x.needs ? "Needs: " + x.needs : "" }, "Run")))));
+  fill("history", j.history.map(r => h("tr", {}, h("td", {}, new Date(r.started * 1000).toLocaleString()), h("td", {}, j.jobs.find(x => x.name === r.name).label),
+    h("td", {}, st(r.state === "passed" && !r.failed ? "ok" : "bad", r.state)), h("td", { className: "n" }, r.passed + r.failed ? `${r.passed} / ${r.passed + r.failed}` : "—"), h("td", { className: "n" }, r.seconds + " s"))));
+  for (const b of document.querySelectorAll("[data-job], #run-all, #rebuild")) b.disabled = busy;
+  if (cur) { $("log").hidden = false; $("log").textContent = j.jobs.find(x => x.name === cur.name).label + "\n\n" + cur.out.join("\n"); if (busy) $("log").scrollTop = 1e9; }
+  if (busy) { const text = `${j.jobs.find(x => x.name === cur.name).label}: running, ${Math.round(Date.now() / 1000 - cur.started)} s`; $("eval-msg").textContent = $("data-msg").textContent = text; }
+  else if (polling) {
+    clearInterval(polling); polling = null;
+    if (cur) $("eval-msg").textContent = $("data-msg").textContent = `${j.jobs.find(x => x.name === cur.name).label}: ${cur.state} in ${cur.seconds} s`;
+    if (queue.length) run(queue.shift(), "eval-msg"); else { loadData(); loadScore(); }
+  }
+}
+
+async function run(job, msg) {
+  const r = await post("/api/run", { job });
+  if (r.error) { $(msg).textContent = r.error; $(msg).className = "msg bad"; if (queue.length) run(queue.shift(), msg); return; }
+  $(msg).className = "msg";
+  polling = polling || setInterval(loadJobs, 1000);
+  loadJobs();
+}
+
+$("rebuild").onclick = async () => { $("data-msg").textContent = "Rebuilding…"; const r = await post("/api/rebuild", { voiced: $("voiced").checked });
+  $("data-msg").textContent = `Rebuilt ${r.lines.toLocaleString()} lines in ${r.seconds} s (${r.voiced ? "model-voiced colour" : "plain drafts"}). New viewers get them.`; loadData(); loadScore(); showAir(+$("moment").value); };
+for (const b of document.querySelectorAll("[data-job]")) b.onclick = () => run(b.dataset.job, "data-msg");
+$("run-all").onclick = async () => { const j = await get("/api/jobs"); queue = j.jobs.filter(x => x.suite).map(x => x.name); run(queue.shift(), "eval-msg"); };
+$("note-add").onclick = async () => { const r = await post("/api/notes", { add: { about: $("note-about").value, text: $("note-text").value } });
+  if (r.error) return note(r.error, true); $("note-text").value = ""; note("Added. Rebuild to put it on air."); loadNotes(); loadData(); };
+$("show").onclick = () => { const mnt = Math.max(0, Math.min(125, +$("minute").value || 0)), p = meta.periods.filter(x => x.p < 5 && mnt >= [0, 0, 45, 90, 105][x.p]).pop();
+  showAir(p.start + (mnt - [0, 0, 45, 90, 105][p.p]) * 60); };
+$("moment").onchange = () => showAir(+$("moment").value);
+addEventListener("hashchange", tab);
+
+(async () => {
+  tab();
+  meta = await get("/meta");
+  $("moment").replaceChildren(...meta.moments.filter(m => m.label !== "Penalty shootout").map(m => new Option(m.label, m.t)));
+  $("moment").selectedIndex = Math.min(2, $("moment").length - 1);
+  await Promise.all([loadData(), loadNotes(), loadScore(), loadJobs(), showAir(+$("moment").value)]);
+  if ((await get("/api/jobs")).current?.state === "running") polling = setInterval(loadJobs, 1000);
+})();
+</script>
+</html>
