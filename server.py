@@ -111,6 +111,16 @@ def run(speed: float, start: float, out: queue.Queue, stop: threading.Event) -> 
     out.put(None)
 
 
+def byte_range(header: str | None, size: int) -> tuple[int, int] | None:
+    """Parse one 'bytes=a-b' / 'bytes=a-' / 'bytes=-n' range into inclusive (start, end); None if absent or unsatisfiable."""
+    m = re.fullmatch(r"bytes=(\d*)-(\d*)", header or "")
+    if not m or not any(m.groups()) or size == 0:
+        return None
+    a, b = m.groups()
+    start, end = (max(0, size - int(b)), size - 1) if not a else (int(a), min(int(b), size - 1) if b else size - 1)
+    return (start, end) if start <= end < size else None
+
+
 class Server(ThreadingHTTPServer):
     allow_reuse_address = False  # on Windows SO_REUSEADDR would let a second copy bind the same port silently
 
@@ -194,6 +204,8 @@ class Handler(BaseHTTPRequestHandler):
             f = engine.ROOT / "samples" / url.path.rsplit("/", 1)[-1]
             ok = f.is_file() and f.suffix in (".md", ".vtt", ".json")
             self._send(200 if ok else 404, "text/plain; charset=utf-8", f.read_bytes() if ok else b"not found")
+        elif url.path == "/demo.mp4":
+            self.demo()
         elif url.path == "/dashboard":
             self._send(200, "text/html; charset=utf-8", (engine.ROOT / "dashboard.html").read_bytes())
         elif url.path == "/":
@@ -214,6 +226,37 @@ class Handler(BaseHTTPRequestHandler):
             self.stream(speed, start)
         else:
             self._send(404, "text/plain", b"not found")
+
+    def demo(self):
+        """Serve demo/demo.mp4 with Range support so the player can seek."""
+        f = engine.ROOT / "demo" / "demo.mp4"
+        if not f.is_file():
+            return self._send(404, "text/plain", b"not found")
+        size, rng = f.stat().st_size, None
+        hdr = self.headers.get("Range")
+        rng = byte_range(hdr, size)
+        if hdr and not rng:
+            self.send_response(416)
+            self.send_header("Content-Range", f"bytes */{size}")
+            self.send_header("Content-Length", "0")
+            return self.end_headers()
+        a, b = rng or (0, size - 1)
+        self.send_response(206 if rng else 200)
+        self.send_header("Content-Type", "video/mp4")
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(b - a + 1))
+        if rng:
+            self.send_header("Content-Range", f"bytes {a}-{b}/{size}")
+        self.end_headers()
+        try:
+            with f.open("rb") as fh:
+                fh.seek(a)
+                left = b - a + 1
+                while left > 0 and (chunk := fh.read(min(1 << 20, left))):
+                    self.wfile.write(chunk)
+                    left -= len(chunk)
+        except OSError:  # player seeked away mid-send
+            pass
 
     def stream(self, speed: float, start: float):
         self.send_response(200)

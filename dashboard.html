@@ -51,14 +51,49 @@
   .part .foot a { color: var(--booth); }
   .who { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; } .who.play { color: var(--booth); } .who.colour { color: var(--ok); } .who.human { color: var(--human); }
   tr.human td { color: var(--dim); font-style: italic; }
+  #room-start { max-width: 760px; } #room-start section { padding: 22px 24px; margin-bottom: 20px; }
+  #room-start h3 { font-size: 26px; margin: 0 0 6px; display: flex; gap: 14px; align-items: center; }
+  #room-start h3 i { font-style: normal; flex: none; width: 38px; height: 38px; border-radius: 50%; background: #1c4f78; display: grid; place-items: center; font-size: 20px; }
+  #room-start p { font-size: 18px; margin: 0 0 14px; color: var(--dim); }
+  #room-start button.big { min-height: 52px; min-width: 160px; font-size: 20px; font-weight: 600; padding: 10px 28px; border-radius: 10px; }
+  #room-start .out { margin-top: 16px; font-size: 18px; } #room-start .out:empty { display: none; }
+  #room-start video { width: 100%; max-width: 100%; border-radius: 8px; background: #000; }
+  #room-start .verdict { font-size: 28px; font-weight: 700; display: flex; align-items: center; gap: 14px; } #room-start .verdict b { font-size: 84px; line-height: 1; }
+  #room-start .verdict.ok { color: var(--ok); } #room-start .verdict.bad { color: var(--bad); }
+  #room-start .fails { margin: 10px 0 0; white-space: pre-wrap; font: 16px/1.5 ui-monospace, Consolas, monospace; }
+  #room-start .cmp { margin: 0 0 18px; } #room-start .cmp > b { display: block; font-size: 20px; margin-bottom: 6px; }
+  #room-start .cmp .bar { font-size: 18px; gap: 10px; margin-bottom: 4px; } #room-start .cmp .bar i { height: 16px; }
+  #room-start .legend { font-size: 16px; } #room-start .legend i { width: 14px; height: 14px; }
+  #room-start .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  #room-start .links a { display: flex; align-items: center; justify-content: center; min-height: 56px; font-size: 20px; font-weight: 600; color: var(--text); background: #1c4f78; border: 1px solid #2f77ad; border-radius: 10px; text-decoration: none; }
+  #room-start .links a:hover { background: #22609286; }
+  #room-start .hit { font-size: 18px; padding: 10px 0; border-bottom: 1px solid var(--line); display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; } #room-start .hit b { font-variant-numeric: tabular-nums; color: var(--dim); min-width: 56px; }
+  #room-start .hit a { color: var(--booth); }
+  #room-start .find { display: flex; flex-wrap: wrap; gap: 12px; } #room-start .find input { flex: 1; min-width: 200px; font-size: 20px; min-height: 52px; padding: 8px 14px; border-radius: 10px; }
+  #room-start .foot { color: var(--dim); font-size: 16px; text-align: center; }
   .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; } .two section { margin: 0; } .two { margin-bottom: 16px; }
 </style>
 
 <header>
   <h1>Control room<small id="match"></small></h1>
-  <nav><a href="#system" id="tab-system">System</a><a href="#data" id="tab-data">Data</a><a href="#eval" id="tab-eval">Eval</a><a href="/">Console</a></nav>
+  <nav><a href="#start" id="tab-start">Start</a><a href="#system" id="tab-system">System</a><a href="#data" id="tab-data">Data</a><a href="#eval" id="tab-eval">Eval</a><a href="/">Console</a></nav>
   <div class="chips" id="chips"></div>
 </header>
+
+<main id="room-start">
+  <section><h3><i>1</i>See it work</h3><p>Watch a real match with the AI doing the talking.</p>
+    <button class="go big" id="s-play">Play</button><div class="out" id="s-play-out" aria-live="polite"></div></section>
+  <section><h3><i>2</i>Is it good?</h3><p>Press the button. It tests itself and tells you yes or no.</p>
+    <button class="go big" id="s-test">Test it</button><div class="out" id="s-test-out" aria-live="polite"></div></section>
+  <section><h3><i>3</i>As good as a person?</h3><p>Here is the AI next to a real commentator.</p>
+    <div class="out" id="s-cmp-out" aria-live="polite" style="display:block">Loading…</div></section>
+  <section><h3><i>4</i>Make things</h3><p>Get a match story, player scores, best moments and subtitles.</p>
+    <button class="go big" id="s-make">Make them</button><div class="out" id="s-make-out" aria-live="polite"></div></section>
+  <section><h3><i>5</i>Find anything</h3><p>Type a player's name to see what the AI said.</p>
+    <div class="find"><input id="s-q" aria-label="Player name" placeholder="Messi"><button class="go big" id="s-find">Find</button></div>
+    <div class="out" id="s-find-out" aria-live="polite"></div></section>
+  <p class="foot">Want the details? Open System, Data or Eval at the top.</p>
+</main>
 
 <main id="room-system">
   <section>
@@ -177,7 +212,7 @@ const num = (x, d = 1) => Number(x).toFixed(Number.isInteger(x) ? 0 : d);
 let meta, queue = [], polling = null;
 
 function tab() {
-  const rooms = ["system", "data", "eval"], on = rooms.includes(location.hash.slice(1)) ? location.hash.slice(1) : "system";
+  const rooms = ["start", "system", "data", "eval"], on = rooms.includes(location.hash.slice(1)) ? location.hash.slice(1) : "start";
   for (const t of rooms) { $("room-" + t).classList.toggle("on", t === on); $("tab-" + t).setAttribute("aria-current", t === on ? "page" : "false"); }
   scrollTo(0, 0);  // the hash names a room, not a place on the page
 }
@@ -286,6 +321,65 @@ $("show").onclick = () => { const mnt = Math.max(0, Math.min(125, +$("minute").v
 $("moment").onchange = () => showAir(+$("moment").value);
 $("find-go").onclick = find; $("find-q").onkeydown = e => e.key === "Enter" && find();
 addEventListener("hashchange", tab);
+
+// ---- Start room: plain-language, one button per card. Own tiny job helper; does not touch run/loadJobs.
+const BUSY = "Busy for a moment. Try again.";
+async function startJob(name, btn, out, busyText) {  // resolves to the finished run, or null if something else is running
+  btn.disabled = true; out.textContent = busyText;
+  try {
+    const r = await post("/api/run", { job: name });
+    if (r.error) { out.textContent = BUSY; return null; }
+    for (;;) {
+      await new Promise(f => setTimeout(f, 700));
+      const c = (await get("/api/jobs")).current;
+      if (c && c.name === name && c.state !== "running") return c;
+    }
+  } catch { out.textContent = BUSY; return null; }
+  finally { btn.disabled = false; }
+}
+
+$("s-play").onclick = () => {
+  const v = h("video", { controls: true, playsinline: true, src: "/demo.mp4", onerror: () => $("s-play-out").replaceChildren("The demo video is not here yet.") });
+  $("s-play-out").replaceChildren(v); v.play().catch(() => {});
+};
+
+$("s-test").onclick = async () => {
+  const out = $("s-test-out"), c = await startJob("gate", $("s-test"), out, "Testing…"); if (!c) return;
+  const tests = c.out.filter(l => /^\s*(PASS|FAIL)/.test(l) && !/\bof\b.*\bgates passed/i.test(l)), bad = tests.filter(l => /^\s*FAIL/.test(l));
+  out.replaceChildren(bad.length || !tests.length
+    ? h("div", {}, h("div", { className: "verdict bad" }, h("b", {}, "✗"), tests.length ? `No. ${bad.length} of ${tests.length} tests failed:` : "No. The tests did not finish."), h("pre", { className: "fails" }, bad.join("\n")))
+    : h("div", { className: "verdict ok" }, h("b", {}, "✓"), `Yes. All ${tests.length} tests passed.`));
+};
+
+async function startScore() {
+  const out = $("s-cmp-out");
+  try {
+    const s = await get("/api/scorecard"), on = s.phases.filter(p => Math.abs(p.wpm[0] / p.wpm[1] - 1) <= .1).length;
+    const row = (label, v) => { const top = Math.max(...v, 1), bar = (cls, x) => h("div", { className: "bar " + cls }, h("i", { style: `width:min(${Math.max(1, 100 * x / top)}%, 420px);` }), num(x, 1));
+      return h("div", { className: "cmp" }, h("b", {}, label), bar("b", v[0]), bar("h", v[1])); };
+    out.replaceChildren(h("div", { className: "legend" }, h("span", {}, h("i", { style: "background:var(--booth)" }), "AI"), h("span", {}, h("i", { style: "background:var(--human)" }), "Real commentator")),
+      row("Words each minute", s.whole.wpm), row("Players named each minute", s.whole.npm),
+      h("div", { className: "cmp" }, h("b", {}, "Parts of the game where it keeps up"), h("span", { style: "font-size:28px;font-weight:700" }, `${on} of ${s.phases.length}`)));
+  } catch { out.textContent = "Could not load this. Try again."; }
+}
+
+$("s-make").onclick = async () => {
+  const out = $("s-make-out"), c = await startJob("products", $("s-make"), out, "Making them…"); if (!c) return;
+  out.replaceChildren(c.state !== "passed" ? "Something went wrong. Try again." : h("div", { className: "links" },
+    ...[["Match story", "report.md"], ["Player scores", "ratings.md"], ["Best moments", "highlights.md"], ["Subtitles", "commentary.vtt"]]
+      .map(([t, f]) => h("a", { href: "/samples/" + f, target: "_blank", rel: "noopener" }, t))));
+};
+
+async function startFind() {
+  const q = $("s-q").value.trim(), out = $("s-find-out"); if (!q) return;
+  const rows = await get("/api/search?q=" + encodeURIComponent(q)).catch(() => ({ error: 1 }));
+  if (rows.error) return out.replaceChildren("Could not search. Try again.");
+  out.replaceChildren(...(rows.length ? rows.slice(0, 8).map(r => h("div", { className: "hit" }, h("b", {}, r.clock || ""), h("span", {}, r.text || r.title || ""),
+    r.link ? h("a", { href: r.link, target: "_blank", rel: "noopener" }, "watch") : null)) : ["Nothing found. Try another name."]),
+    ...(rows.length > 8 ? [h("div", { className: "hit" }, `and ${rows.length - 8} more`)] : []));
+}
+$("s-find").onclick = startFind; $("s-q").onkeydown = e => e.key === "Enter" && startFind();
+startScore();
 
 (async () => {
   tab();
