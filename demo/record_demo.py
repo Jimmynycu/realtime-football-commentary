@@ -21,7 +21,14 @@ broadcast's sound; each line appears when the video's own clock reaches its time
 every line is rendered ahead of time with the Windows voices (David for play-by-play, Zira for colour; the live overlay
 uses the browser's voices) and laid on the sound track at the same times, with the same rule for cutting in.
 
-The broadcast itself is never downloaded; only the two minutes shown are recorded, with its own sound muted.
+The broadcast itself is never downloaded; only the passage shown is recorded.
+
+The three lines for the console (they add a "Load recorder" button; a click on it fetches record.js and lines.json through
+a local tab, since the page itself may not read from localhost):
+
+    b = Object.assign(document.createElement("button"), {textContent: "Load recorder", style: "position:fixed;z-index:99999;top:90px;left:40px;padding:18px"});
+    b.onclick = () => { open("http://localhost:8799/send"); addEventListener("message", e => { if (e.origin === "http://localhost:8799" && e.data.code) { (0, eval)(trustedTypes.createPolicy("rec" + Date.now(), {createScript: s => s}).createScript(e.data.code)); window.__cfg = e.data.cfg; b.remove(); } }); };
+    document.body.append(b);
 """
 import hashlib
 import json
