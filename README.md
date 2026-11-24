@@ -6,47 +6,46 @@ No paid services: Python stdlib, Chrome, one open model on the GPU.
 
 ## Demo
 
-[![Demo: the human commentator and the system side by side, then the control room in use](demo-sbs.jpg)](demo/demo.mp4)
+[![Demo: the system commentating the real broadcast, with the human commentator beside it](demo-sbs.jpg)](demo/demo.mp4)
 
-`demo/demo.mp4`, about two and a half minutes, in two parts.
+**`demo/demo.mp4`, 30 seconds: the system on the real broadcast, the human commentator beside it.** The half-minute around
+Argentina's second goal (35:08 to 35:37 on the match clock), once through, with the system's voice from the third second.
+Under the picture two lanes run on one clock, a block for every stretch of speech and a tag for every player named: one
+lane for the broadcast's own commentator, one for the system. A panel counts words and players named for both and times
+how long after the shot each of them named the scorer.
 
-**1. Side by side on the real broadcast.** The 50 seconds around Argentina's second goal (34:59 to 35:49 on the match
-clock) are played twice: first with the broadcast's own sound, the human commentator; then the same seconds again with the
-system commentating, as it does live. Under the picture two lanes run on one clock, a block for every stretch of speech and
-a tag for every player named, one lane for the human and one for the system. A panel counts words and players named for
-both, and times how long after the shot each of them named the scorer.
-
-What the passage shows, counted from the same data the clip draws:
+Counted from the same data the clip draws:
 
 | | Human commentator | System |
 |---|---|---|
-| Up to 3 s after the goal: words · players named | 51 · 9 | 54 · 6 |
+| Up to 3 s after the goal: words · players named | 36 · 5 | 42 · 4 |
 | Scorer named after the shot | +0.0 s | +0.0 s |
-| After that, through the celebration: words | 9 | 53 |
-| Whole 50 s: words · players named | 60 · 9 | 107 · 13 |
+| After that: words | 7 | 23 |
+| Whole 29 s: words · players named | 43 · 5 | 65 · 9 |
 
-While the ball is in play the two keep the same pace, and the human names more of the players in the move. Both name
-Di María at the shot; the system reads an event feed that marks the goal at the shot, and a live feed would add its own
-delay. After the goal they part: the human says nine words and lets the stadium carry the celebration, the system talks
-through the replay. That is a real difference in judgement and the clip shows it instead of hiding it; over the whole match
-the two are within 1% of each other on words (see the booth section), so the system is making up elsewhere for words the
-human would not have spent here. The human lane shows when he speaks and whom he names, measured from the broadcast's
-captions; his words are not reproduced.
+While the ball is in play the two keep the same pace and call the same players within a second of each other (Álvarez on
+the break, Di María at the shot). Both name the scorer at the shot; the system reads an event feed that marks the goal at
+the shot, and a live feed would add its own delay. After the goal they part: the human says seven words and lets the
+stadium carry the celebration, the system goes into the replay. That is a real difference in judgement and the clip shows
+it; over the whole match the two are within 1% of each other on words (see the booth section). The human lane shows when he
+speaks and whom he names, measured from the broadcast's captions; his words are not reproduced.
 
-**2. The control room in use.** A real recording of the dashboard's Start page: press "Test it" and it tests itself and
-answers yes or no; see the system next to the human in three bars; press "Make them" for the match story, player scores,
-best moments and subtitles; type a name to find everything said about a player; then the System and Eval rooms behind it.
+**`demo/dashboard.mp4`, 42 seconds: the control room in use.** A real recording of the dashboard's Start page: press "Test
+it" and it tests itself and answers yes or no; see the system next to the human in three bars; press "Make them" for the
+match story, player scores, best moments and subtitles; type a name to find everything said about a player; then the System
+and Eval rooms behind it.
 
-How the clip was made. Part 1: `demo/record.js` runs in the YouTube tab and draws the video frame, the lanes and the panel
-onto a canvas, then records that canvas together with the broadcast's own sound; a screen recorder would also have captured
-the browser and the account. Each line appears when the video's own clock reaches its time, as in the live overlay. The
+How the clips were made. `demo/record.js` runs in the YouTube tab and draws the video frame, the lanes and the panel onto a
+canvas, then records that canvas together with the broadcast's own sound; a screen recorder would also have captured the
+browser and the account. Each line appears when the video's own clock reaches its time, as in the live overlay. The
 recorder is handed to the page, and the recording handed back, through local tabs opened on a click
 (`python demo/record_demo.py receive`), because a youtube.com page may not talk to localhost without a browser permission
 and an automated tab may not download. Browser speech cannot be recorded, so the system's voices in the clip are rendered
 ahead of time with the Windows voices (David for play-by-play, Zira for the co-commentator) and laid on the sound track by
-`python demo/record_demo.py mux` at the lines' times with the same cut-in rule; the live overlay uses the browser's own
-voices. In the first take the broadcast is at full level; in the second it stays under the system at a tenth. The broadcast
-is not downloaded; only the passage shown is recorded. Part 2: `node demo/tour.mjs` drives a headless Chrome over the
+`python demo/record_demo.py mux` at the lines' times with the same cut-in rule, over the broadcast's sound at a tenth; the
+live overlay uses the browser's own voices. The recorder can also play the same seconds twice, first with the broadcast's
+own sound and then with the system's, which is the fairer test by ear and twice as long to watch. The broadcast is not
+downloaded; only the passage shown is recorded. The dashboard clip: `node demo/tour.mjs` drives a headless Chrome over the
 DevTools protocol, with real clicks on the running dashboard, and captures it frame by frame.
 
 ![AI commentary over the FIFA broadcast](demo-screenshot.jpg)

@@ -90,9 +90,10 @@ def lines(a: float, b: float) -> None:
             who, shot = colour.short(m.name(e["player"])), to_video(e["t"])
             goals.append({"shot": shot, "who": who, "ai": next((l["t"] for l in out if l["t"] >= shot - 1 and l["text"].startswith("GOAL")), None),
                           "human": next((t for t, flag, n in human if t >= shot - 1 and n == who), None)})
-    # Each passage is played twice, first with the broadcast's own sound and then with the system's: the two voices peak
-    # at the same moments (the goal), so taking turns inside one playthrough would hide one of them exactly there.
-    passes = [[v0, v1, who] for v0, v1 in ((start + 41, start + 91),) for who in ("human", "ai")]
+    # One pass, the half-minute around the goal, with the system's voice from the first seconds: the result is on screen at
+    # once, and the human is there throughout as a lane. (Add a ("human") pass before it to replay the same seconds with
+    # the broadcast's own sound first; that is a fairer test by ear and twice as long to watch.)
+    passes = [[start + 50, start + 79, "ai"]]
     (HERE / "lines.json").write_text(json.dumps({"lines": out, "human": human, "goals": goals, "passes": passes}, ensure_ascii=False), encoding="utf-8")
     print(f"human: {len(human)} words, {sum(h[1] for h in human)} names; goals: {goals}")
     print(f"{len(out)} lines -> demo/lines.json, voiced into demo/audio")
@@ -136,14 +137,14 @@ def mux(raw: str, marks: list) -> None:
         graph.append(f"[{i + 1}:a]atrim=0:{d:.2f},afade=t=out:st={max(0, d - .05):.2f}:d=0.05,adelay={int(t * 1000)}:all=1[a{i}]")
     # The recording carries the broadcast's own sound. The two take turns as lines.json says: the commentator at full
     # level while the system is silent, then the system over the stadium at a tenth.
-    human = "+".join(f"between(t,{clip - 2.2:.2f},{clip + v1 - v0:.2f})" for clip, v0, v1, who in marks if who == "human")
+    human = "+".join(f"between(t,{clip - 2.2:.2f},{clip + v1 - v0:.2f})" for clip, v0, v1, who in marks if who == "human") or "0"
     graph.append("".join(f"[a{i}]" for i in range(len(placed))) + f"amix=inputs={len(placed)}:normalize=0,apad[ai]")
     graph.append(f"[0:a]volume='if({human},1,0.1)':eval=frame[bc]")
     graph.append("[bc][ai]amix=inputs=2:normalize=0:duration=first[a]")
     cmd += ["-filter_complex", ";".join(graph), "-map", "0:v", "-map", "[a]", "-c:v", "libx264", "-preset", "slow", "-crf", "24", "-pix_fmt", "yuv420p",
-            "-r", "30", "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", str(HERE / "part_a.mp4")]
+            "-r", "30", "-c:a", "aac", "-b:a", "128k", "-shortest", "-movflags", "+faststart", str(HERE / "demo.mp4")]
     subprocess.run(cmd, check=True)
-    print(f"{len(placed)} of {len(timed)} lines on the sound track -> demo/part_a.mp4")
+    print(f"{len(placed)} of {len(timed)} lines on the sound track -> demo/demo.mp4")
 
 
 PORT = 8799

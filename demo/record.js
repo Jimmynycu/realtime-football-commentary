@@ -1,10 +1,11 @@
 // Records the side-by-side demo inside the YouTube tab: the broadcast picture, the human commentator and the system on
 // one clock. Everything is drawn on a canvas and recorded with the broadcast's own sound; nothing else on the screen is
 // captured. See record_demo.py. Usage:  recordDemo(<contents of demo/lines.json>)  then click "Save recording".
-// Each passage is played twice: first with the broadcast's own sound (the human), then again with the system's voice.
+// passes: [[video from, video to, whose sound]]. One pass with the system's voice shows the result at once; two passes
+// (human, then ai) replay the same seconds for a comparison by ear.
 window.recordDemo = async ({ lines, human, goals, passes, receiver = "http://localhost:8799" }) => {
   const state = window.__rec = { phase: "seeking", frames: 0 };
-  const v = document.querySelector("video"), W = 1280, H = 720, VW = 960, VH = 540, SPAN = 26, X0 = 150, X1 = W - 36;
+  const v = document.querySelector("video"), W = 1280, H = 720, VW = 960, VH = 540, SPAN = 14, X0 = 150, X1 = W - 36;
   const c = Object.assign(document.createElement("canvas"), { width: W, height: H }), g = c.getContext("2d");
   const HUMAN = "#e0912a", AI = "#4cc3ff", COLOUR = "#5fd38a", HOT = "#ff5d5d", INK = "#e8eef5", DIM = "#8a99ab", BG = "#0b1016", PANEL = "#141c26";
   const font = (px, w = 600) => g.font = `${w} ${px}px system-ui, "Segoe UI", sans-serif`;
@@ -12,6 +13,8 @@ window.recordDemo = async ({ lines, human, goals, passes, receiver = "http://loc
   // the commentator's stretches of speech: caption words less than 0.7 s apart are one block
   const blocks = []; for (const [t] of human) { const b = blocks.at(-1); if (b && t - b[1] <= 0.7) b[1] = t + 0.3; else blocks.push([t - 0.1, t + 0.3]); }
   const x = (t, now) => X1 - (now - t) * (X1 - X0) / SPAN;
+  const named = human.filter(h => h[1]);  // tags sit on two rows in turn, so names called a second apart do not cover each other
+  let count = 0; for (const l of lines) { l.k = count; count += l.names.length; }
   const tag = (text, tx, y, colour) => { font(13); const w = g.measureText(text).width + 12; g.fillStyle = BG; g.fillRect(tx - 2, y - 9, w + 4, 20); g.fillStyle = colour; g.fillRect(tx, y - 8, 3, 18); g.fillStyle = INK; g.fillText(text, tx + 8, y + 1); };
 
   const draw = () => {
@@ -49,11 +52,11 @@ window.recordDemo = async ({ lines, human, goals, passes, receiver = "http://loc
     const lane = (y, label, sub, colour) => { g.fillStyle = PANEL; g.fillRect(0, y, W, 74); font(14, 700); g.fillStyle = colour; g.fillText(label, 16, y + 28); font(11, 400); g.fillStyle = DIM; g.fillText(sub, 16, y + 48); };
     lane(VH + 8, "HUMAN", "speech · players named", HUMAN); lane(VH + 90, "AI SYSTEM", "speech · players named", AI);
     g.save(); g.beginPath(); g.rect(X0, VH, X1 - X0 + 4, H - VH); g.clip();
-    for (const [a, b] of blocks) if (a <= now && b > now - SPAN) { g.fillStyle = HUMAN; g.fillRect(x(a, now), VH + 46, Math.max(3, x(Math.min(b, now), now) - x(a, now)), 22); }
-    for (const [t, flag, name] of human) if (flag && t <= now && t > now - SPAN) tag(name || "name", x(t, now), VH + 26, HUMAN);
+    for (const [a, b] of blocks) if (a <= now && b > now - SPAN) { g.fillStyle = HUMAN; g.fillRect(x(a, now), VH + 60, Math.max(3, x(Math.min(b, now), now) - x(a, now)), 14); }
+    named.forEach(([t, , name], i) => t <= now && t > now - SPAN && tag(name || "name", x(t, now), VH + 22 + (i % 2) * 20, HUMAN));
     for (const l of lines) if (l.t <= now && l.t + l.dur > now - SPAN) { g.fillStyle = l.voice === "analyst" ? COLOUR : l.sal >= 9 ? HOT : AI;
-      g.fillRect(x(l.t, now), VH + 128, Math.max(3, x(Math.min(l.t + l.dur, now), now) - x(l.t, now)), 22);
-      l.names.forEach((n, i) => l.t + i * 0.9 <= now && tag(n, x(l.t + i * 0.9, now), VH + 108, l.voice === "analyst" ? COLOUR : AI)); }
+      g.fillRect(x(l.t, now), VH + 142, Math.max(3, x(Math.min(l.t + l.dur, now), now) - x(l.t, now)), 14);
+      l.names.forEach((n, i) => l.t + i * 0.9 <= now && tag(n, x(l.t + i * 0.9, now), VH + 104 + ((l.k + i) % 2) * 20, l.voice === "analyst" ? COLOUR : AI)); }
     g.restore();
     g.fillStyle = INK; g.fillRect(X1, VH + 8, 2, 156); font(11, 600); g.fillStyle = DIM; g.fillText("now", X1 - 30, VH + 172); g.fillText(`${SPAN} s ago`, X0, VH + 172);
     if (state.card) { font(30, 700); const w = g.measureText(state.card).width + 80; g.fillStyle = "rgba(8,12,18,.9)"; g.fillRect((VW - w) / 2, VH / 2 - 44, w, 88);
@@ -78,10 +81,9 @@ window.recordDemo = async ({ lines, human, goals, passes, receiver = "http://loc
   await ac.resume(); state.pass = passes[0]; state.marks = []; state.phase = "recording"; rec.start(1000);
   const t0 = performance.now();
   for (const [i, pass] of passes.entries()) {
-    state.pass = pass; state.label = `PASSAGE ${Math.floor(i / 2) + 1} · TAKE ${i % 2 + 1} OF 2`;
+    state.pass = pass; state.label = passes.length > 1 ? `TAKE ${i + 1} OF ${passes.length}` : "LIVE ON THE BROADCAST";
     await seek(pass[0]);
-    state.card = pass[2] === "human" ? "First: the broadcast's own commentator" : "The same seconds again: the AI system";
-    await wait(2000); state.card = null;
+    if (passes.length > 1) { state.card = pass[2] === "human" ? "First: the broadcast's own commentator" : "The same seconds again: the AI system"; await wait(2000); state.card = null; }
     await v.play();
     state.marks.push([+((performance.now() - t0) / 1000).toFixed(2), pass[0], pass[1], pass[2]]);  // where this take starts in the recording: the sound mix needs it
     await new Promise(r => { const tick = () => v.currentTime >= pass[1] || v.ended ? r() : setTimeout(tick, 100); tick(); });
