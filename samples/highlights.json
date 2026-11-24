@@ -1,0 +1,340 @@
+[
+ {
+  "title": "23' Messi penalty for Argentina (Argentina 1-0 France)",
+  "why": "penalty goal",
+  "clock": "22:24",
+  "match_t": 1344.1,
+  "video_start": 1419,
+  "video_end": 1455,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=1419s",
+  "lines": [
+   {
+    "clock": "22:07",
+    "voice": "analyst",
+    "text": "Di María is back in the starting eleven for the final after an injury earlier in the tournament."
+   },
+   {
+    "clock": "22:14",
+    "voice": "analyst",
+    "text": "Di María scored the winning goal in last year's Copa América final against Brazil."
+   },
+   {
+    "clock": "22:24",
+    "voice": "pbp",
+    "text": "Lionel Messi from the spot, and scores! Argentina 1-0 France."
+   },
+   {
+    "clock": "22:29",
+    "voice": "analyst",
+    "text": "Messi was never going to miss from that distance."
+   },
+   {
+    "clock": "22:33",
+    "voice": "analyst",
+    "text": "Messi is 35, and has said this will be the last World Cup match of a remarkable career."
+   }
+  ]
+ },
+ {
+  "title": "36' Di María goal for Argentina (Argentina 2-0 France)",
+  "why": "goal",
+  "clock": "35:22",
+  "match_t": 2122.6,
+  "video_start": 2197,
+  "video_end": 2233,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=2197s",
+  "lines": [
+   {
+    "clock": "35:10",
+    "voice": "analyst",
+    "text": "France keep pushing attacks down the left side; that's where it's paying off for them."
+   },
+   {
+    "clock": "35:17",
+    "voice": "pbp",
+    "text": "Argentina break! Álvarez leads it."
+   },
+   {
+    "clock": "35:20",
+    "voice": "pbp",
+    "text": "Di María free on —"
+   },
+   {
+    "clock": "35:22",
+    "voice": "pbp",
+    "text": "GOAL! Ángel Di María scores for Argentina, set up by Alexis MacAllister! Argentina 2-0 France."
+   },
+   {
+    "clock": "35:28",
+    "voice": "analyst",
+    "text": "Di María with a clinical finish. And what a precise ball from MacAllister."
+   },
+   {
+    "clock": "35:33",
+    "voice": "analyst",
+    "text": "MacAllister started it, then Messi and Álvarez carried it on."
+   },
+   {
+    "clock": "35:37",
+    "voice": "analyst",
+    "text": "Wow, huge space for Di María out wide. No one marked him at all."
+   }
+  ]
+ },
+ {
+  "title": "80' Mbappé penalty for France (Argentina 2-1 France)",
+  "why": "penalty goal",
+  "clock": "79:24",
+  "match_t": 5219.5,
+  "video_start": 5342,
+  "video_end": 5378,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=5342s",
+  "lines": [
+   {
+    "clock": "79:06",
+    "voice": "analyst",
+    "text": "Otamendi continues to be rock solid, not a misplaced pass from him tonight."
+   },
+   {
+    "clock": "79:11",
+    "voice": "analyst",
+    "text": "Kolo Muani scored within a minute of coming on in the semi-final."
+   },
+   {
+    "clock": "79:24",
+    "voice": "pbp",
+    "text": "GOAL! Kylian Mbappé converts the penalty. Argentina 2-1 France."
+   },
+   {
+    "clock": "79:29",
+    "voice": "analyst",
+    "text": "Mbappé was never going to miss from there."
+   },
+   {
+    "clock": "79:33",
+    "voice": "analyst",
+    "text": "Mbappé already has a World Cup winner's medal, at 23."
+   },
+   {
+    "clock": "79:37",
+    "voice": "analyst",
+    "text": "France are back in it. This game just changed."
+   }
+  ]
+ },
+ {
+  "title": "81' Mbappé goal for France (Argentina 2-2 France)",
+  "why": "goal",
+  "clock": "80:59",
+  "match_t": 5313.6,
+  "video_start": 5436,
+  "video_end": 5472,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=5436s",
+  "lines": [
+   {
+    "clock": "80:47",
+    "voice": "pbp",
+    "text": "Coman carries it on."
+   },
+   {
+    "clock": "80:52",
+    "voice": "pbp",
+    "text": "Coman, to Rabiot."
+   },
+   {
+    "clock": "80:56",
+    "voice": "pbp",
+    "text": "Mbappé, on the edge of the —"
+   },
+   {
+    "clock": "80:59",
+    "voice": "pbp",
+    "text": "GOAL! Kylian Mbappé scores for France, set up by Marcus Thuram! Argentina 2-2 France."
+   },
+   {
+    "clock": "81:04",
+    "voice": "analyst",
+    "text": "Mbappé made that look easy, and it was anything but. And what a ball from Thuram."
+   },
+   {
+    "clock": "81:09",
+    "voice": "analyst",
+    "text": "Camavinga started it, then it went through Thuram and Rabiot."
+   },
+   {
+    "clock": "81:13",
+    "voice": "analyst",
+    "text": "Look at the space! Mbappé is completely free on the far side; nobody picked him up at all."
+   }
+  ]
+ },
+ {
+  "title": "105' Lautaro Martínez chance for Argentina, blocked (0.23 xG)",
+  "why": "chance, 0.23 xG",
+  "clock": "104:28",
+  "match_t": 7240.5,
+  "video_start": 7453,
+  "video_end": 7489,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=7453s",
+  "lines": [
+   {
+    "clock": "104:11",
+    "voice": "analyst",
+    "text": "The break came to nothing in the end."
+   },
+   {
+    "clock": "104:14",
+    "voice": "pbp",
+    "text": "MacAllister."
+   },
+   {
+    "clock": "104:19",
+    "voice": "pbp",
+    "text": "MacAllister."
+   },
+   {
+    "clock": "104:24",
+    "voice": "pbp",
+    "text": "Messi threads it through to MacAllister!"
+   },
+   {
+    "clock": "104:28",
+    "voice": "pbp",
+    "text": "Martínez's shot is blocked."
+   },
+   {
+    "clock": "104:30",
+    "voice": "pbp",
+    "text": "Montiel shoots, but there's a body in the way."
+   },
+   {
+    "clock": "104:35",
+    "voice": "analyst",
+    "text": "Argentina keep winning possession high up the pitch."
+   }
+  ]
+ },
+ {
+  "title": "108' Messi goal for Argentina (Argentina 3-2 France)",
+  "why": "goal",
+  "clock": "107:58",
+  "match_t": 7515.2,
+  "video_start": 7773,
+  "video_end": 7809,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=7773s",
+  "lines": [
+   {
+    "clock": "107:44",
+    "voice": "pbp",
+    "text": "Tchouaméni."
+   },
+   {
+    "clock": "107:49",
+    "voice": "analyst",
+    "text": "France are opting to clear long again. No interest in building from —"
+   },
+   {
+    "clock": "107:53",
+    "voice": "pbp",
+    "text": "Argentina break! Martínez leads it."
+   },
+   {
+    "clock": "107:57",
+    "voice": "pbp",
+    "text": "Martínez shoots, —"
+   },
+   {
+    "clock": "107:58",
+    "voice": "pbp",
+    "text": "GOAL! Lionel Messi scores for Argentina! Argentina 3-2 France."
+   },
+   {
+    "clock": "108:02",
+    "voice": "analyst",
+    "text": "Clinical finish from Messi there."
+   },
+   {
+    "clock": "108:05",
+    "voice": "analyst",
+    "text": "Montiel started it, then Martínez and Messi continued the move."
+   },
+   {
+    "clock": "108:09",
+    "voice": "analyst",
+    "text": "Messi had a penalty saved against Poland in the group stage, and has scored the others since."
+   }
+  ]
+ },
+ {
+  "title": "118' Mbappé penalty for France (Argentina 3-3 France)",
+  "why": "penalty goal",
+  "clock": "117:05",
+  "match_t": 8062.3,
+  "video_start": 8320,
+  "video_end": 8356,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=8320s",
+  "lines": [
+   {
+    "clock": "116:51",
+    "voice": "analyst",
+    "text": "Mbappé was only the second teenager to score in a World Cup final, after Pelé."
+   },
+   {
+    "clock": "116:57",
+    "voice": "analyst",
+    "text": "Mbappé continues to push forward with the ball for France."
+   },
+   {
+    "clock": "117:05",
+    "voice": "pbp",
+    "text": "Kylian Mbappé from the spot, and scores! Argentina 3-3 France."
+   },
+   {
+    "clock": "117:10",
+    "voice": "analyst",
+    "text": "Mbappé had that chance, and he wasn't going to miss it."
+   },
+   {
+    "clock": "117:14",
+    "voice": "analyst",
+    "text": "It's all square again, and the tension in the final is electric. Everything feels different now."
+   }
+  ]
+ },
+ {
+  "title": "120+3' Kolo Muani chance for France, saved by Emiliano Martínez (0.28 xG)",
+  "why": "chance, 0.28 xG",
+  "clock": "122:44",
+  "match_t": 8401.5,
+  "video_start": 8659,
+  "video_end": 8695,
+  "link": "https://www.youtube.com/watch?v=RgqKdplLIk4&t=8659s",
+  "lines": [
+   {
+    "clock": "122:41",
+    "voice": "pbp",
+    "text": "Konaté threads it through to Kolo Muani!"
+   },
+   {
+    "clock": "122:44",
+    "voice": "pbp",
+    "text": "Good stop from Martínez to deny Kolo Muani."
+   },
+   {
+    "clock": "122:50",
+    "voice": "analyst",
+    "text": "The goalkeeper is —"
+   },
+   {
+    "clock": "122:51",
+    "voice": "pbp",
+    "text": "Fernandez threads it through to Messi!"
+   },
+   {
+    "clock": "122:57",
+    "voice": "pbp",
+    "text": "Montiel."
+   }
+  ]
+ }
+]

@@ -14,12 +14,13 @@ person would say it; the guardrail compares the result with the draft and falls 
 """
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 import json
-import urllib.request
 from collections import defaultdict, deque
 
 import engine
+import harness
 
 NOTES_FILE = engine.ROOT / "prep_notes.json"
 CACHE_FILE = engine.ROOT / "data" / "colour_cache.json"
@@ -641,6 +642,14 @@ JUDGE_SHOTS = [
     ("Draft: Almost all of this is being played in Eastfield's half.\nRewording: Eastfield just can't get out of their own half.", "SAME"),
     ("Draft: Ruiz has hardly misplaced a pass all night.\nRewording: Ruiz continues to dominate midfield, not a pass out of place.", "DIFFERENT"),
     ("Draft: Eastfield are giving the ball away far too easily.\nRewording: Too many loose passes from Eastfield. They just can't keep hold of it.", "SAME")]
+try:  # the prompt chosen by measurement (tuning/prompts.py); the constants above stay the baseline it is compared with
+    _tuned = json.loads((engine.ROOT / "tuning" / "prompts.json").read_text(encoding="utf-8"))
+    _tuned = _tuned["active_prompt"] if _tuned["active"] != "baseline" else {}
+except (OSError, ValueError, KeyError):
+    _tuned = {}
+WRITE_SPEC = harness.Spec("colour", _tuned.get("system", SYSTEM), [tuple(x) for x in _tuned.get("shots", SHOTS)], max_tokens=70,
+                          temperature=_tuned.get("temperature", 0.8), attempts=3, soft=("opening",))
+JUDGE_SPEC = harness.Spec("colour_judge", JUDGE, JUDGE_SHOTS, max_tokens=3, temperature=0, attempts=1)
 QUOTES = "’‘“”—–…"
 
 
@@ -663,12 +672,12 @@ class Writer:
         self.stats = defaultdict(int)
         self.openings: deque[str] = deque(maxlen=30)
 
-    def _ask(self, system: str, shots: list, user: str, max_tokens: int, temperature: float) -> str:
-        msgs = [{"role": "system", "content": system}] + [{"role": r, "content": c} for u, a in shots for r, c in (("user", u), ("assistant", a))]
-        body = {"model": self.model, "max_tokens": max_tokens, "temperature": temperature, "messages": msgs + [{"role": "user", "content": user}]}
-        req = urllib.request.Request(f"{self.url}/chat/completions", json.dumps(body).encode(), {"Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=20) as r:
-            return json.load(r)["choices"][0]["message"]["content"].strip().strip('"')
+    def _judge(self, draft: str, out: str) -> str:
+        """The same-meaning judge, its own traced spec so its latency shows up next to the writer's."""
+        word, verdict = harness.run(JUDGE_SPEC, f"Draft: {draft}\nRewording: {out}", self.url, self.model)
+        if verdict.startswith("error"):
+            raise harness.ModelError(verdict)  # a dead judge aborts the line, as a dead writer does
+        return "" if word.upper().startswith("SAME") else "meaning"
 
     def _wrong(self, draft: str, out: str) -> str:
         """Why this rewrite may not go on air, or '' if it may."""
@@ -681,9 +690,7 @@ class Writer:
             return "script"  # the model drifted into another language or started a second paragraph
         if not 3 <= len(out.split()) <= 28:
             return "length"
-        if not self._ask(JUDGE, JUDGE_SHOTS, f"Draft: {draft}\nRewording: {out}", 3, 0).upper().startswith("SAME"):
-            return "meaning"
-        return ""
+        return self._judge(draft, out)
 
     def write(self, draft: str, situation: str, variant: int = 0) -> str:
         """variant > 0 means this subject has come up before: same facts, different words."""
@@ -697,20 +704,13 @@ class Writer:
         user = (f"Situation: {situation}\nDraft: {draft}"
                 + ("\n(You have made this point earlier in the match. Make it again in different words.)" if variant else "")
                 + (f"\n(Do not begin with: {', '.join(avoid)}.)" if avoid else ""))
-        text, verdict, spare = draft, "error", None
-        try:
-            for _ in range(3):
-                out = self._ask(SYSTEM, SHOTS, user, 70, 0.8)
-                why = self._wrong(draft, out)
-                self.stats["try:" + (why or "ok")] += 1
-                if not why and opening(out) not in self.openings:
-                    text, verdict = out, "llm"
-                    break
-                spare = spare or (None if why else out)  # faithful, but opens like a recent line: still better than the draft
-            else:
-                text, verdict = (spare, "llm:stale opening") if spare else (draft, "rejected")
-        except Exception as ex:
-            verdict = "error:" + type(ex).__name__
+        stale = lambda out: "opening" if opening(out) in self.openings else ""  # noqa: E731
+        spec = dataclasses.replace(WRITE_SPEC, checks=[lambda out: self._wrong(draft, out), stale], fallback=draft)
+        def tried(why: str) -> None:  # a stale opening is still a faithful try, as before
+            self.stats["try:" + (why if why not in ("", "opening") else "ok")] += 1
+
+        text, verdict = harness.run(spec, user, self.url, self.model, on_try=tried)
+        verdict = {"ok": "llm", "spare:opening": "llm:stale opening"}.get(verdict, "rejected" if verdict.startswith("fallback") else verdict)
         self.stats[verdict] += 1
         self.openings.append(opening(text))
         if not verdict.startswith("error"):

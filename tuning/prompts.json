@@ -1,0 +1,287 @@
+{
+ "model": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+ "date": "2026-11-24",
+ "n": 173,
+ "copy_overlap": 0.9,
+ "alpha": 0.05,
+ "candidates": [
+  {
+   "name": "baseline",
+   "fields": [],
+   "hypothesis": "Reference: the prompt in colour.py today.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ]
+   ],
+   "temperature": 0.8,
+   "on_air": 126,
+   "lexical_pass": 134,
+   "copied": 2,
+   "words_per_line": 11.4,
+   "distinct_openings": 0.699,
+   "latency_p50_ms": 521,
+   "p_vs_baseline": null
+  },
+  {
+   "name": "temp_0.4",
+   "fields": [
+    "temperature"
+   ],
+   "hypothesis": "Fewer invented names and claims (name 9, claim 7 per 40) if sampling is less random.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ]
+   ],
+   "temperature": 0.4,
+   "on_air": 134,
+   "lexical_pass": 144,
+   "copied": 0,
+   "words_per_line": 11.3,
+   "distinct_openings": 0.682,
+   "latency_p50_ms": 515,
+   "p_vs_baseline": 0.2295
+  },
+  {
+   "name": "no_spin",
+   "fields": [
+    "system"
+   ],
+   "hypothesis": "Meaning drift (4 per 40): forbid making a line better or worse for a side than the draft.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Never make it sound better or worse for either team than the draft does: a neutral statement stays neutral and a score read-out stays a plain read-out, not a judgement. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ]
+   ],
+   "temperature": 0.8,
+   "on_air": 130,
+   "lexical_pass": 150,
+   "copied": 12,
+   "words_per_line": 10.7,
+   "distinct_openings": 0.705,
+   "latency_p50_ms": 517,
+   "p_vs_baseline": 0.6655
+  },
+  {
+   "name": "neutral_shots",
+   "fields": [
+    "shots"
+   ],
+   "hypothesis": "Neutral and score-read-out drafts get judged or spun; show two re-voiced faithfully.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ],
+    [
+     "Situation: 30 minutes played, Riverton 0-0 Eastfield.\nDraft: Riverton can put this one into the box.",
+     "Riverton can send this one into the box."
+    ],
+    [
+     "Situation: 60 minutes played, Riverton 2-1 Eastfield.\nDraft: It is Riverton 2, Eastfield 1.",
+     "Riverton 2, Eastfield 1 at the moment."
+    ]
+   ],
+   "temperature": 0.8,
+   "on_air": 125,
+   "lexical_pass": 145,
+   "copied": 14,
+   "words_per_line": 10.1,
+   "distinct_openings": 0.751,
+   "latency_p50_ms": 542,
+   "p_vs_baseline": 1.0
+  },
+  {
+   "name": "min_edit",
+   "fields": [
+    "system"
+   ],
+   "hypothesis": "Added claims ('for both teams') come from free rewriting; ask for the fewest changed words.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Change as few words of the draft as you can; only make it sound like speech. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ]
+   ],
+   "temperature": 0.8,
+   "on_air": 139,
+   "lexical_pass": 149,
+   "copied": 3,
+   "words_per_line": 11.1,
+   "distinct_openings": 0.728,
+   "latency_p50_ms": 532,
+   "p_vs_baseline": 0.066
+  },
+  {
+   "name": "names_subset",
+   "fields": [
+    "system"
+   ],
+   "hypothesis": "Name failures (9 per 40): state the rule that names in the line must come from the draft.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Every name in your line must also appear in the draft. Example: if the draft names only Ruiz, do not name any other player or the other team. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ]
+   ],
+   "temperature": 0.8,
+   "on_air": 124,
+   "lexical_pass": 139,
+   "copied": 1,
+   "words_per_line": 11.4,
+   "distinct_openings": 0.682,
+   "latency_p50_ms": 540,
+   "p_vs_baseline": 0.8776
+  },
+  {
+   "name": "short_16",
+   "fields": [
+    "system"
+   ],
+   "hypothesis": "Longer lines have more room to add claims and names; cap them at 16 words.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 16 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ]
+   ],
+   "temperature": 0.8,
+   "on_air": 121,
+   "lexical_pass": 136,
+   "copied": 1,
+   "words_per_line": 10.8,
+   "distinct_openings": 0.728,
+   "latency_p50_ms": 503,
+   "p_vs_baseline": 0.5327
+  },
+  {
+   "name": "min_edit+temp_0.4",
+   "fields": [
+    "system",
+    "temperature"
+   ],
+   "hypothesis": "Added claims ('for both teams') come from free rewriting; ask for the fewest changed words. + Fewer invented names and claims (name 9, claim 7 per 40) if sampling is less random.",
+   "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Change as few words of the draft as you can; only make it sound like speech. Output only what you would say.",
+   "shots": [
+    [
+     "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+     "Too many loose passes from Eastfield. They just can't keep hold of it."
+    ],
+    [
+     "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+     "Oh, Okafor will be kicking himself. That really should have been a goal."
+    ],
+    [
+     "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+     "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+    ]
+   ],
+   "temperature": 0.4,
+   "on_air": 144,
+   "lexical_pass": 151,
+   "copied": 3,
+   "words_per_line": 11.1,
+   "distinct_openings": 0.717,
+   "latency_p50_ms": 526,
+   "p_vs_baseline": 0.0051
+  }
+ ],
+ "active": "min_edit+temp_0.4",
+ "active_prompt": {
+  "system": "You are the co-commentator on a live football broadcast. Say the DRAFT the way you would say it on air: natural, conversational, one or two short sentences, at most 24 words. Keep the meaning exactly: whoever is doing well stays doing well, whoever is struggling stays struggling. Keep every name and every number in the draft exactly as written. Add no new facts, names, numbers, positions or events. Change as few words of the draft as you can; only make it sound like speech. Output only what you would say.",
+  "shots": [
+   [
+    "Situation: 20 minutes played, Riverton 0-0 Eastfield.\nDraft: Eastfield are giving the ball away far too easily.",
+    "Too many loose passes from Eastfield. They just can't keep hold of it."
+   ],
+   [
+    "Situation: 55 minutes played, Riverton 1-0 Eastfield.\nDraft: Okafor will feel that should have gone in.",
+    "Oh, Okafor will be kicking himself. That really should have been a goal."
+   ],
+   [
+    "Situation: 70 minutes played, Riverton 1-0 Eastfield.\nDraft: Ruiz is 34, the senior man in that Riverton defence.",
+    "And that's the experience of Ruiz for you, 34 now, the senior man in that Riverton defence."
+   ]
+  ],
+  "temperature": 0.4
+ },
+ "holdout": {
+  "name": "holdout:min_edit+temp_0.4",
+  "model": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+  "n": 99,
+  "baseline_on_air": 11,
+  "active_on_air": 21,
+  "baseline_copied": 0,
+  "active_copied": 0,
+  "p": 0.0129,
+  "confirmed": true,
+  "time": "2026-11-24 17:35:53"
+ }
+}

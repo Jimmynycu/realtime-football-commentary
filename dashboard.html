@@ -4,7 +4,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Control room · live commentary</title>
 <style>
-  /* Two rooms on one page. Data: what the system runs on and the levers that rebuild it. Eval: is it any good, measured. */
+  /* Three rooms on one page. System: every part of the production line and what it turns out. Data: what the system
+     runs on and the levers that rebuild it. Eval: is it any good, measured. */
   :root { --bg:#0b1016; --panel:#141c26; --line:#243142; --text:#e8eef5; --dim:#8a99ab; --booth:#3d9bd9; --human:#c97f2a;
           --ok:#5fd38a; --warn:#f0b24a; --bad:#ff6b6b; }
   * { box-sizing: border-box; }
@@ -41,6 +42,13 @@
   .suite { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
   .suite h3 { margin: 0; font-size: 14px; } .suite p { margin: 0; color: var(--dim); font-size: 13px; flex: 1; } .suite .foot { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
   pre { background: #0a0f15; border: 1px solid var(--line); border-radius: 6px; padding: 10px; margin: 10px 0 0; max-height: 300px; overflow: auto; font: 12px/1.45 ui-monospace, Consolas, monospace; white-space: pre-wrap; }
+  .parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 12px; }
+  .part { border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .part h3 { margin: 0; font-size: 15px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .part h3 i { font-style: normal; color: var(--dim); font-variant-numeric: tabular-nums; } .part h3 small { color: var(--dim); font-weight: 400; }
+  .part p { margin: 0; } .part dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; font-size: 13px; }
+  .part dt { color: var(--dim); } .part dd { margin: 0; overflow-wrap: anywhere; } .part .foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: auto; }
+  .part .foot a { color: var(--booth); }
   .who { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; } .who.play { color: var(--booth); } .who.colour { color: var(--ok); } .who.human { color: var(--human); }
   tr.human td { color: var(--dim); font-style: italic; }
   .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; } .two section { margin: 0; } .two { margin-bottom: 16px; }
@@ -48,9 +56,29 @@
 
 <header>
   <h1>Control room<small id="match"></small></h1>
-  <nav><a href="#data" id="tab-data">Data</a><a href="#eval" id="tab-eval">Eval</a><a href="/">Console</a></nav>
+  <nav><a href="#system" id="tab-system">System</a><a href="#data" id="tab-data">Data</a><a href="#eval" id="tab-eval">Eval</a><a href="/">Console</a></nav>
   <div class="chips" id="chips"></div>
 </header>
+
+<main id="room-system">
+  <section>
+    <h2>The production line</h2>
+    <p class="why">A demo is one finished thing. A system is the line that makes it, checks it and improves it, so the next thing costs less than the first. Six parts; each reports its own state.</p>
+    <div class="parts" id="parts-line"></div>
+  </section>
+  <section>
+    <h2>What comes off the line</h2>
+    <p class="why">Products built on the same data, the same checks and the same harness. The live commentary is the first; the others reuse what it needed.</p>
+    <div class="parts" id="parts-product"></div>
+    <div class="msg" id="sys-msg" role="status" aria-live="polite" style="margin-top:10px"></div>
+  </section>
+  <section>
+    <h2>Asset library</h2>
+    <p class="why">One search over every line on air, every preparation note and every highlight. Accents and case do not matter.</p>
+    <div class="row"><input id="find-q" aria-label="Search the asset library" placeholder="Di Maria, penalty, offside…" style="flex:1; min-width:220px"><button id="find-go">Search</button><span class="msg" id="find-msg" role="status" aria-live="polite"></span></div>
+    <div class="scroll" style="max-height:340px; overflow-y:auto"><table id="found"><tbody></tbody></table></div>
+  </section>
+</main>
 
 <main id="room-data">
   <div class="tiles" id="tiles"></div>
@@ -149,9 +177,28 @@ const num = (x, d = 1) => Number(x).toFixed(Number.isInteger(x) ? 0 : d);
 let meta, queue = [], polling = null;
 
 function tab() {
-  const on = location.hash === "#eval" ? "eval" : "data";
-  for (const t of ["data", "eval"]) { $("room-" + t).classList.toggle("on", t === on); $("tab-" + t).setAttribute("aria-current", t === on ? "page" : "false"); }
+  const rooms = ["system", "data", "eval"], on = rooms.includes(location.hash.slice(1)) ? location.hash.slice(1) : "system";
+  for (const t of rooms) { $("room-" + t).classList.toggle("on", t === on); $("tab-" + t).setAttribute("aria-current", t === on ? "page" : "false"); }
   scrollTo(0, 0);  // the hash names a room, not a place on the page
+}
+
+async function loadSystem() {
+  const parts = await get("/api/system"), good = /^(running|built|passing|ready|up|ok|tracing|measured|\d)/i;
+  for (const group of ["line", "product"]) $("parts-" + group).replaceChildren(...parts.filter(x => x.group === group).map(x => {
+    const n = parts.indexOf(x) + 1;
+    return h("div", { className: "part" }, h("h3", {}, h("i", {}, String(n).padStart(2, "0")), x.title, h("small", {}, x.zh), st(good.test(x.state || "") ? "ok" : "warn", x.state || "unknown")),
+      h("p", {}, x.summary || ""), h("dl", {}, ...(x.facts || []).flatMap(([k, v]) => [h("dt", {}, k), h("dd", {}, String(v))])),
+      h("div", { className: "foot" }, ...x.jobs.map(j => h("button", { onclick: () => run(j.name, "sys-msg") }, j.label)),
+        ...(x.open || []).map(f => h("a", { href: "/samples/" + f, target: "_blank", rel: "noopener" }, f))));
+  }));
+}
+
+async function find() {
+  const q = $("find-q").value.trim(); if (!q) return;
+  const rows = await get("/api/search?q=" + encodeURIComponent(q));
+  $("find-msg").textContent = rows.error ? rows.error : `${rows.length} found`;
+  fill("found", (rows.error ? [] : rows).map(r => h("tr", {}, h("td", {}, h("span", { className: "tag" }, r.kind || "")), h("td", { className: "n" }, r.clock || ""),
+    h("td", {}, r.text || r.title || ""), h("td", {}, r.link ? h("a", { href: r.link, target: "_blank", rel: "noopener", style: "color:var(--booth)" }, "watch") : ""))));
 }
 
 async function loadData() {
@@ -211,11 +258,12 @@ async function loadJobs() {
     h("td", {}, st(r.state === "passed" && !r.failed ? "ok" : "bad", r.state)), h("td", { className: "n" }, r.passed + r.failed ? `${r.passed} / ${r.passed + r.failed}` : "—"), h("td", { className: "n" }, r.seconds + " s"))));
   for (const b of document.querySelectorAll("[data-job], #run-all, #rebuild")) b.disabled = busy;
   if (cur) { $("log").hidden = false; $("log").textContent = j.jobs.find(x => x.name === cur.name).label + "\n\n" + cur.out.join("\n"); if (busy) $("log").scrollTop = 1e9; }
-  if (busy) { const text = `${j.jobs.find(x => x.name === cur.name).label}: running, ${Math.round(Date.now() / 1000 - cur.started)} s`; $("eval-msg").textContent = $("data-msg").textContent = text; }
+  if (busy) { const text = `${j.jobs.find(x => x.name === cur.name).label}: running, ${Math.round(Date.now() / 1000 - cur.started)} s`; $("eval-msg").textContent = $("data-msg").textContent = $("sys-msg").textContent = text; }
   else if (polling) {
     clearInterval(polling); polling = null;
     if (cur) $("eval-msg").textContent = $("data-msg").textContent = `${j.jobs.find(x => x.name === cur.name).label}: ${cur.state} in ${cur.seconds} s`;
-    if (queue.length) run(queue.shift(), "eval-msg"); else { loadData(); loadScore(); }
+    if (cur) $("sys-msg").textContent = $("eval-msg").textContent;
+    if (queue.length) run(queue.shift(), "eval-msg"); else { loadData(); loadScore(); loadSystem(); }
   }
 }
 
@@ -236,6 +284,7 @@ $("note-add").onclick = async () => { const r = await post("/api/notes", { add: 
 $("show").onclick = () => { const mnt = Math.max(0, Math.min(125, +$("minute").value || 0)), p = meta.periods.filter(x => x.p < 5 && mnt >= [0, 0, 45, 90, 105][x.p]).pop();
   showAir(p.start + (mnt - [0, 0, 45, 90, 105][p.p]) * 60); };
 $("moment").onchange = () => showAir(+$("moment").value);
+$("find-go").onclick = find; $("find-q").onkeydown = e => e.key === "Enter" && find();
 addEventListener("hashchange", tab);
 
 (async () => {
@@ -243,7 +292,7 @@ addEventListener("hashchange", tab);
   meta = await get("/meta");
   $("moment").replaceChildren(...meta.moments.filter(m => m.label !== "Penalty shootout").map(m => new Option(m.label, m.t)));
   $("moment").selectedIndex = Math.min(2, $("moment").length - 1);
-  await Promise.all([loadData(), loadNotes(), loadScore(), loadJobs(), showAir(+$("moment").value)]);
+  await Promise.all([loadSystem(), loadData(), loadNotes(), loadScore(), loadJobs(), showAir(+$("moment").value)]);
   if ((await get("/api/jobs")).current?.state === "running") polling = setInterval(loadJobs, 1000);
 })();
 </script>

@@ -22,6 +22,42 @@ overlay uses the browser's own voices. The broadcast is not downloaded and its o
 
 ![AI commentary over the FIFA broadcast](demo-screenshot.jpg)
 
+## The system: a production line and what comes off it
+
+![Control room, system](demo-dashboard-system.jpg)
+
+A single demo is one finished thing. What makes this a system is the line that makes it, checks it and improves it, so
+that the next product costs less than the first. The dashboard's System room (`http://localhost:8765/dashboard`) shows each
+part of the line reporting its own state.
+
+**The production line**
+
+| Part | What it is here | Evidence |
+|---|---|---|
+| Eval platform | The scorecard against the human commentator and the check suites (`eval.py` 16 checks, `eval_colour.py` 5, `eval_harness.py` 15, `eval_products.py` 23), run from the Eval room; history in `runs/control.jsonl`. | `python eval.py`; the gate reads the scorecard at 73.3 words per minute against the human's 72.3 |
+| Data platform | The Data room: every input and derived file with its origin, freshness and whether it leaves the machine; the rebuild levers; the preparation sheet. | The Data room table above (10 rows) |
+| Prompt tuning | `tuning/`: the prompt of the colour re-voicing call is chosen the way the booth's knobs are, by measurement. Each candidate changes one thing and states the failure it is aimed at; all are run on the same 173 drafts, one attempt each, and a rewrite counts only if it passes the lexical checks and the same-meaning judge and is not a copy of the draft. A candidate replaces the baseline only if it puts more lines on air with p < 0.05 on a paired sign test. No model weights are trained: fine-tuning was considered and dropped as too much compute for the gain. | Baseline 126 of 173 on air (72.8%). No single change qualified (best: "change as few words as needed", 139, p 0.066). The two best combined, that instruction plus temperature 0.4, reached 144 (83.2%), p 0.005, and is now active (`tuning/prompts.json`). Because it was picked after looking, it was re-tested on 99 drafts it was not chosen on, the ones the baseline had failed three times: 21 on air against 11, p 0.013 (`python tuning/confirm.py`). Same set, model choice: the 7B puts 72.8% on air, the untuned 1.5B 66.5% at about a quarter of the latency. Limits: the judge is the same 7B; lines already in the cache were voiced with the old prompt. |
+| AI infra | `infra.py`: model registry (the 1.5B and 7B language models, the vision model and its projector), a routing table that says which call uses which model and why, service checks, GPU state and a benchmark. The GPU has 8 GB, which holds the 7B language model or the vision model, not both. | `python infra.py`: RTX 2070, 5420 of 8192 MB in use with the 7B model up; last benchmark in `runs/bench.jsonl`: 8 calls, p50 0.494 s, p95 0.668 s, 45.2 tokens per second |
+| Harness base | `harness.py`: every model call goes through one function that owns the HTTP call, the timeout, the retries, the check loop, the fallback and one trace line per call (`runs/traces.jsonl`). | `harness.status()`: 84 calls traced; colour lines 70% accepted on the first attempt, 10% fell back (40 calls, p50 825 ms, p95 1554 ms); the meaning judge 44 calls, 0% fell back |
+| AI R&D workflow | `gate.py`, the release gate: the two suites plus six thresholds on the scorecard. The same command runs in CI (`.github/workflows/eval.yml`, on push and pull request to `main`). Every run is logged to `runs/gates.jsonl`. | `python gate.py`: 8 of 8 gates passed (eval.py checks 16 pass; eval_colour.py checks 5 pass; words per minute 73.3 vs 72.3; names per minute 6.38 vs 5.98; phases within 10% 6 of 7; longest silence 19.9 s; pauses over 10 s per minute 1.09 vs 0.72; colour lines containing a number 22%) |
+
+The GitHub Actions run itself has not been observed yet: the workflow file exists and runs the same command, but it has not
+been seen to execute on GitHub. The gate was run locally only.
+
+**What comes off the line**
+
+| Product | What it is | Output |
+|---|---|---|
+| Live commentary overlay | The first product: the booth's lines drawn on the real broadcast and spoken, as described above. | `demo/demo.mp4` |
+| Match report and three social posts | A headline, a summary, a numbers table, then a single post, a five-post thread and a caption; every figure is read from the events. | `samples/report.md` (397 words) |
+| Player report card | One rating per player from a stated formula (6.0 plus weights on goals, xG, chances created, ball wins, dribbles, saves, pass accuracy, minus fouls and losses of the ball). The formula ignores minutes played and goals conceded, so a short appearance and a full match are scored alike and a goalkeeper is not penalised for the goals he let in. | `samples/ratings.md` (34 players rated) |
+| Asset library | One accent-insensitive search over the lines on air, the preparation notes and the highlight moments, each result with a link to the video second. | `python products.py search "Di Maria"`; the System room |
+| Highlights edit list and subtitle track | An edit list of video clips with YouTube deep links, and a WebVTT subtitle track of the system's commentary on the video's own clock. No video is downloaded or cut. Nobody has yet played the subtitle track against the video. | `samples/highlights.md` (8 highlights), `samples/commentary.vtt` (1328 cues) |
+
+**Why these and not others.** Every product reuses what the commentary already needed: the event data, the lines on air and
+the guardrail idea of text that is true by construction. None of them calls a model, which is why each could be built and
+checked in minutes. A product that needs a model would go through the same harness and the same gate.
+
 ## Run it
 
 ```
@@ -42,6 +78,9 @@ the commentary follows.
 `python eval.py` — 16 deterministic checks in ~1 s. `python eval.py --llm` — the same plus 86 real jobs through the LLM.
 Without the LLM server the template commentator runs. Any OpenAI-compatible endpoint works instead of the local model:
 `set LLM_BASE_URL=https://api.openai.com/v1`, `set LLM_MODEL=...`, `set LLM_API_KEY=...`.
+
+Production line and products: `python gate.py` (release gate), `python infra.py` (models, routing, services, GPU),
+`python products.py all` (report, ratings, highlights, subtitle track).
 
 ## The booth: ball-first rules, tuned to a human commentator
 

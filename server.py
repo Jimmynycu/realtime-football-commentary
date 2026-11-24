@@ -152,6 +152,10 @@ class Handler(BaseHTTPRequestHandler):
                     return self._json(CTL.jobs())
                 if path == "/api/notes":
                     return self._json(CTL.notes())
+                if path == "/api/system":
+                    return self._json(CTL.system())
+                if path == "/api/search":
+                    return self._json(CTL.find(q.get("q", [""])[0][:80]))
                 if path == "/api/lines":
                     a = min(M.duration, max(0.0, float(q.get("from", ["0"])[0])))
                     return self._json(CTL.window(a, min(a + 900, max(a, float(q.get("to", [str(a + 180)])[0])))))
@@ -186,6 +190,10 @@ class Handler(BaseHTTPRequestHandler):
         q = parse_qs(url.query)
         if url.path.startswith("/api/"):
             self.api(url.path, q, None)
+        elif url.path.startswith("/samples/"):  # the products' outputs, read-only: a bare file name, nothing outside samples/
+            f = engine.ROOT / "samples" / url.path.rsplit("/", 1)[-1]
+            ok = f.is_file() and f.suffix in (".md", ".vtt", ".json")
+            self._send(200 if ok else 404, "text/plain; charset=utf-8", f.read_bytes() if ok else b"not found")
         elif url.path == "/dashboard":
             self._send(200, "text/html; charset=utf-8", (engine.ROOT / "dashboard.html").read_bytes())
         elif url.path == "/":
