@@ -41,8 +41,8 @@ part of the line reporting its own state.
 | Harness base | `harness.py`: every model call goes through one function that owns the HTTP call, the timeout, the retries, the check loop, the fallback and one trace line per call (`runs/traces.jsonl`). | `harness.status()`: 84 calls traced; colour lines 70% accepted on the first attempt, 10% fell back (40 calls, p50 825 ms, p95 1554 ms); the meaning judge 44 calls, 0% fell back |
 | AI R&D workflow | `gate.py`, the release gate: the two suites plus six thresholds on the scorecard. The same command runs in CI (`.github/workflows/eval.yml`, on push and pull request to `main`). Every run is logged to `runs/gates.jsonl`. | `python gate.py`: 8 of 8 gates passed (eval.py checks 16 pass; eval_colour.py checks 5 pass; words per minute 73.3 vs 72.3; names per minute 6.38 vs 5.98; phases within 10% 6 of 7; longest silence 19.9 s; pauses over 10 s per minute 1.09 vs 0.72; colour lines containing a number 22%) |
 
-The GitHub Actions run itself has not been observed yet: the workflow file exists and runs the same command, but it has not
-been seen to execute on GitHub. The gate was run locally only.
+The gate has run on GitHub Actions as well as locally: the first push of the workflow (commit `68d0c74`, ubuntu, Python 3.13)
+fetched the StatsBomb files, ran `python gate.py` and passed 8 of 8, with no transcript and no language model on the runner.
 
 **What comes off the line**
 
